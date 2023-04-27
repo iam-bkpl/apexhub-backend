@@ -77,12 +77,30 @@ class Rating(models.Model):
     def __str__(self):
         return f"{self.user} rated {self.rate} on {self.product}"
     
+
+class Cart(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart,
+                             on_delete=models.CASCADE,
+                             related_name='items')
+    product = models.ForeignKey(Product,
+                                on_delete=models.CASCADE,
+                                )
+    quantity = models.PositiveSmallIntegerField()
     
+    class Meta:
+        unique_together = [['cart','product']]
+    
+
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='comments')
     date_added = models.DateTimeField(auto_now_add=True)
+    text = models.TextField(blank=True)
     
     def __str__(self):
         return f"{self.user} commented on {self.product}"
