@@ -1,6 +1,6 @@
 from django.db import models
-from apexhub.settings import AUTH_USER_MODEL
 from django.conf import settings
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -20,6 +20,9 @@ class Product(models.Model):
     date_update = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
 
+    def __str__(self):
+        return self.name
+    
     
 class ProductImage(models.Model):
     product = models.ForeignKey(
@@ -44,6 +47,9 @@ class Order(models.Model):
                                       choices=PAYMENT_STATUS_CHOICES,
                                       default=PAYMENT_STATUS_PENDING)
     
+    def __str__(self):
+        return f"{self.user} ordered and payment status is {self.payment_status}"
+    
     
 class OrderItem(models.Model):
     order = models.ForeignKey(
@@ -57,14 +63,27 @@ class OrderItem(models.Model):
     quantity = models.PositiveSmallIntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     
+    def __str__(self):
+        return f"{self.order}"
+    
+    
 
 class Rating(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')
+    rate = models.IntegerField()
     date_added = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.user} rated {self.rate} on {self.product}"
+    
     
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='comments')
     date_added = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.user} commented on {self.product}"
+    
