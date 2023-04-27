@@ -1,3 +1,6 @@
 from django.contrib import admin
+from acs.models import JobApplication, JobPost
 
-# Register your models here.
+
+admin.site.register(JobPost)
+admin.site.register(JobApplication)
