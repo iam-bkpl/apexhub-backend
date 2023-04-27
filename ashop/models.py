@@ -58,3 +58,13 @@ class OrderItem(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     
 
+class Rating(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')
+    date_added = models.DateTimeField(auto_now_add=True)
+    
+
+class Comment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='comments')
+    date_added = models.DateTimeField(auto_now_add=True)
