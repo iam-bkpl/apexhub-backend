@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 django = "==4.1"
+djangorestframework = "*"
+markdown = "*"
+django-filter = "*"
 
 [dev-packages]
 
