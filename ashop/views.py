@@ -12,3 +12,4 @@ class CategoryView(ListCreateAPIView):
         return CollectionSerializer
 
     
+
