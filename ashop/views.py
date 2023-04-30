@@ -1,15 +1,22 @@
 from rest_framework.response import Response
 from ashop.models import Category, Product
-from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView
-from ashop.serializers import CollectionSerializer
+from rest_framework.viewsets import ModelViewSet
+from ashop.serializers import CollectionSerializer, ProductSerializer
 
-class CategoryView(ListCreateAPIView):
-    def get_queryset(self):
-        return Category.objects.all()
+class CategoryViewSet(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CollectionSerializer
+    # def get_queryset(self):
+    #     return Category.objects.all()
     
-    def get_serializer_class(self):
-        return CollectionSerializer
+    # def get_serializer_class(self):
+    #     return CollectionSerializer
 
+
+class ProductViewSet(ModelViewSet):
+    queryset = Product.objects.prefetch_related('images').all()
+    serializer_class = ProductSerializer
+    
     
 
