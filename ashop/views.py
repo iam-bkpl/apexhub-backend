@@ -5,10 +5,11 @@ from rest_framework.viewsets import ModelViewSet
 from ashop.serializers import CollectionSerializer, ProductImageSerializer, ProductSerializer
 
 class CategoryViewSet(ModelViewSet):
-    queryset = Category.objects.all()
+    # queryset = Category.objects.all()
     serializer_class = CollectionSerializer
-    # def get_queryset(self):
-    #     return Category.objects.all()
+    
+    def get_queryset(self):
+        return Category.objects.all()
     
     # def get_serializer_class(self):
     #     return CollectionSerializer
