@@ -59,7 +59,7 @@ class CustomUser(AbstractBaseUser):
     def is_external(self):
         return self.user_type == self.USER_TYPE_EXTERNAL
     
-    def has_perms(self, perm, obj=None):
+    def has_perm(self, perm, obj=None):
         # return self.is_admin
         return True
     

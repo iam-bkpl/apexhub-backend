@@ -83,7 +83,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'apexhub',
+        # 'USER': 'root',  # Replace with your database username
+        # 'PASSWORD': 'lipak@123',  # Replace with your database password
+        # 'HOST': 'localhost',  # Replace with your database host address
+        # 'PORT': '3306',  # Replace with your database port (default is 3306 for MySQL)
+    }   
+    
 }
 
 
