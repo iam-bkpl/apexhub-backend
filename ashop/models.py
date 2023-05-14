@@ -68,16 +68,6 @@ class OrderItem(models.Model):
     
     
 
-class Rating(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')
-    rate = models.IntegerField()
-    date_added = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return f"{self.user} rated {self.rate} on {self.product}"
-    
-
 class Cart(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
@@ -95,7 +85,17 @@ class CartItem(models.Model):
         unique_together = [['cart','product']]
     
 
-
+class Rating(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')
+    rate = models.IntegerField()
+    date_added = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.user} rated {self.rate} on {self.product}"
+    
+    
+    
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='comments')

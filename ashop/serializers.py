@@ -12,13 +12,15 @@ class CollectionSerializer(serializers.ModelSerializer):
     products_count = serializers.IntegerField(read_only=True)
     
 class ProductImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = ['id','image']
+ 
     
     def create(self, validated_data):
         product_id = self.context['product_id']
         return ProductImage.objects.create(product_id=product_id, **validated_data)
+    
+    class Meta:
+        model = ProductImage
+        fields = ['id','image']
     
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only = True)

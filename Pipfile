@@ -11,6 +11,9 @@ django-filter = "*"
 pillow = "*"
 django-debug-toolbar = "*"
 drf-nested-routers = "*"
+whitenoise = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 

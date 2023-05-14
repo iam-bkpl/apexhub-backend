@@ -22,6 +22,9 @@ class ProductViewSet(ModelViewSet):
     queryset = Product.objects.prefetch_related('images').all()
     serializer_class = ProductSerializer
 
+    def get_serializer_context(self):
+        return {'request': self.request}
+
     
     
     
