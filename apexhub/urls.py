@@ -22,6 +22,7 @@ from apexhub.settings import DEBUG, MEDIA_ROOT, MEDIA_URL
 urlpatterns = [
     path('ashop/', include('ashop.urls')),
     path('acs/',include('acs.urls')),
+    path('core/',include('core.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('rest_framework.urls')),
     path('auth/', include('djoser.urls')),

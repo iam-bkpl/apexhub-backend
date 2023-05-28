@@ -1,4 +1,3 @@
-import django.db
 from rest_framework import serializers
 from ashop.models import Category, Product, ProductImage
 from . models import Category,Product
