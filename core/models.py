@@ -95,7 +95,7 @@ class Student(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
     address = models.CharField(max_length=255, blank=True)
     program = models.CharField(max_length=255,choices=PROGRAM_CHOICES, blank=True)
-    enrollment_date = models.DateTimeField()
+    enrollment_date = models.DateTimeField(blank=True, null=True)
     
     def save(self, *args, **kwargs):
         if not self.id:
