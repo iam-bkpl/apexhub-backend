@@ -46,8 +46,7 @@ class JobPost(models.Model):
     
     def __str__(self):
         return self.title
-    
-    
+
 
 class JobApplication(models.Model):
     APPLICATION_STATUS_PENDING = 'pending'

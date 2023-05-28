@@ -30,15 +30,43 @@ class StudentViewSet(CreateModelMixin,UpdateModelMixin,RetrieveModelMixin,Generi
          
  
 class ExternalViewSet(CreateModelMixin,RetrieveModelMixin,UpdateModelMixin, GenericViewSet):
- queryset = External.objects.all()
- serializer_class = ExternalSerializer
+    queryset = External.objects.all()
+    serializer_class = ExternalSerializer
+    
+    
+    @action(detail=False, methods=['GET','PUT'])
+    def me(self,request):
+        (external,created) = External.objects.get_or_create(
+         user_id = request.user.id
+     )
+        
+        if request.method == 'GET':
+            serializers = ExternalSerializer(external)
+            return Response(serializers.data)
+        
+        elif request.method =='PUT':
+            serializers = ExternalSerializer(external, data=request.data)
+            serializers.is_valid(raise_exception=True)
+            serializers.save()
+            return Response(serializers.data)
 
- @action(detail=True, methods=['GET','PUT'])
- def me(self,request):
-     pass
+        
      
  
  
 class AcsViewSet(ModelViewSet):
- queryset = Acs.objects.all()
- serializer_class = AcsSerializer
+    queryset = Acs.objects.all()
+    serializer_class = AcsSerializer
+    
+    @action(detail=False, methods=['GET','PUT'])
+    def me(self, request):
+        (acs,created) = Acs.objects.get_or_create(user_id = request.user.id)
+        
+        if request.method == 'GET':
+            serializers = AcsSerializer(acs)
+            return Response(serializers.data)
+        elif request.method == 'PUT':
+            serializers = AcsSerializer(acs,data=request.data)
+            serializers.is_valid(raise_exception=True)
+            serializers.save()
+            return Response(serializers.data)

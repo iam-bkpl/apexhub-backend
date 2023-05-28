@@ -16,16 +16,19 @@ class StudentSerializer(serializers.ModelSerializer):
   
  
 class ExternalSerializer(serializers.ModelSerializer):
+  user = serializers.CharField(read_only=True)
   class Meta:
-   model = External
-   fields = ['id','user','name','address','phone_number','website','description','created_at']
+    model = External
+    fields = ['id','user','name','address','phone_number','website','description','created_at']
    
   
 class AcsSerializer(serializers.ModelSerializer):
- class Meta:
-  model = Acs
-  fields = ['id','user','website']
+  user = serializers.CharField(read_only=True)
   
+  class Meta:
+    model = Acs
+    fields = ['id','user','website']
+    
   
 class UserSerializer(BaseUserSerializer):
   class Meta(BaseUserSerializer.Meta):
