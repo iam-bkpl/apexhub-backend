@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from apexhub.settings import DEBUG, MEDIA_ROOT, MEDIA_URL
 
 urlpatterns = [
+    path('',include('ashop.urls')),
     path('ashop/', include('ashop.urls')),
     path('acs/',include('acs.urls')),
     path('core/',include('core.urls')),

@@ -1,12 +1,17 @@
+import rest_framework
 from rest_framework.response import Response
 from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveModelMixin
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
-from core.models import Acs, External, Student
+from core.models import Acs, CustomUser, External, Student
 from ashop.permissions import IsAdminOrReadOnly
-from .serializers import AcsSerializer, ExternalSerializer, StudentSerializer
+from .serializers import AcsSerializer, ExternalSerializer, StudentSerializer,CustomUserSerializer
 
+
+class CustomUserViewSet(ModelViewSet):
+    serializer_class = CustomUserSerializer
+    queryset = CustomUser.objects.all()
 
 class StudentViewSet(ModelViewSet):
  serializer_class = StudentSerializer

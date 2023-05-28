@@ -21,6 +21,7 @@ class CategoryViewSet(ModelViewSet):
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.prefetch_related('images').all()
     serializer_class = ProductSerializer
+    search_fields =['name','description']
 
     def get_serializer_context(self):
         return {'request': self.request}
