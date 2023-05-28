@@ -8,8 +8,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     fields = "__all__"
 
 class StudentSerializer(serializers.ModelSerializer):     
-  # user = CustomUserSerializer(read_only=True)
-  user = serializers.CharField(read_only=True,max_length=4)
+  user = serializers.CharField(read_only=True)
   class Meta:
     model = Student
     fields = ['id','user','first_name','last_name','gender','address','program','enrollment_date']

@@ -1,19 +1,19 @@
-from django.shortcuts import render
-import rest_framework
 from rest_framework.response import Response
 from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveModelMixin
 from rest_framework.decorators import action
-import rest_framework.routers
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from core.models import Acs, External, Student
+from ashop.permissions import IsAdminOrReadOnly
 from .serializers import AcsSerializer, ExternalSerializer, StudentSerializer
 
 
-class StudentViewSet(CreateModelMixin,UpdateModelMixin,RetrieveModelMixin,GenericViewSet):
+class StudentViewSet(ModelViewSet):
  serializer_class = StudentSerializer
  queryset = Student.objects.all()
+ permission_classes = [IsAdminOrReadOnly]
  
- @action(detail=False,methods=['GET','PUT'])
+ @action(detail=False,methods=['GET','PUT'],permission_classes=[IsAuthenticated])
  def me(self,request):
      (student,created) = Student.objects.get_or_create(
          user_id = request.user.id
@@ -50,9 +50,6 @@ class ExternalViewSet(CreateModelMixin,RetrieveModelMixin,UpdateModelMixin, Gene
             serializers.save()
             return Response(serializers.data)
 
-        
-     
- 
  
 class AcsViewSet(ModelViewSet):
     queryset = Acs.objects.all()
