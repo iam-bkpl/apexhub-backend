@@ -21,13 +21,13 @@ from apexhub.settings import DEBUG, MEDIA_ROOT, MEDIA_URL
 
 urlpatterns = [
     # path('',include('ashop.urls')),
-    path('ashop/', include('ashop.urls')),
-    path('acs/',include('acs.urls')),
-    path('core/',include('core.urls')),
-    path('admin/', admin.site.urls),
-    path('api/', include('rest_framework.urls')),
-    path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.jwt')),
+    path('api/ashop/', include('ashop.urls')),
+    path('api/acs/',include('acs.urls')),
+    path('api/core/',include('core.urls')),
+    path('api/admin/', admin.site.urls),
+    path('api/api/', include('rest_framework.urls')),
+    path('api/auth/', include('djoser.urls')),
+    path('api/auth/', include('djoser.urls.jwt')),
     path('__debug__/', include('debug_toolbar.urls')),
 
     # mvt 
