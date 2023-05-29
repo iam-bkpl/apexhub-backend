@@ -24,7 +24,7 @@ urlpatterns = [
     path('api/ashop/', include('ashop.urls')),
     path('api/acs/',include('acs.urls')),
     path('api/core/',include('core.urls')),
-    path('api/admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('api/api/', include('rest_framework.urls')),
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.jwt')),
