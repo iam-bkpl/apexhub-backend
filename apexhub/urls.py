@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from apexhub.settings import DEBUG, MEDIA_ROOT, MEDIA_URL
 
 urlpatterns = [
-    path('',include('ashop.urls')),
+    # path('',include('ashop.urls')),
     path('ashop/', include('ashop.urls')),
     path('acs/',include('acs.urls')),
     path('core/',include('core.urls')),
@@ -29,6 +29,11 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
     path('__debug__/', include('debug_toolbar.urls')),
+
+    # mvt 
+    # path('mtv/acs/', include('acs.burls')),
+    path('',include('ashop.burls')),
+
 ] 
 if settings.DEBUG:
     urlpatterns += static( settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

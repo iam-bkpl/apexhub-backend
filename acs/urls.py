@@ -12,3 +12,4 @@ router.register('jobapplication', views.JobApplicationViewSet, basename='jobappl
 urlpatterns = [
 path('',include(router.urls)),
 ]
+
