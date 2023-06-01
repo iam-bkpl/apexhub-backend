@@ -1,6 +1,17 @@
-from djoser.serializers import UserSerializer as BaseUserSerializer
+from djoser.serializers import UserSerializer as BaseUserSerializer,UserCreateSerializer as BaseUserCreateSerializers
 from rest_framework import serializers
 from core.models import Acs, CustomUser, External, Student
+
+class UserCreateSerializer(BaseUserCreateSerializers):
+  class Meta(BaseUserCreateSerializers.Meta):
+    fields = ['id','email','password','user_type']    
+    
+
+class UserSerializer(BaseUserSerializer):
+  class Meta(BaseUserSerializer.Meta):
+    fields = ['id','email','password','user_type']
+
+
 
 class CustomUserSerializer(serializers.ModelSerializer):
   class Meta:

@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-
+from django.utils.text import slugify
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -11,7 +11,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     stock = models.IntegerField()
@@ -22,6 +22,10 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)  # Generate the slug based on the title
+        super(Product, self).save(*args, **kwargs)
     
     
 class ProductImage(models.Model):
@@ -104,4 +108,5 @@ class Comment(models.Model):
     
     def __str__(self):
         return f"{self.user} commented on {self.product}"
+    
     

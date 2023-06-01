@@ -1,10 +1,14 @@
+import django.shortcuts
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
-from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db.models.aggregates import Count
-from ashop.serializers import CollectionSerializer, ProductImageSerializer, ProductSerializer
-from ashop.models import Category, Product, ProductImage
+from ashop.serializers import (CollectionSerializer, OrderSerializer, ProductImageSerializer,
+    ProductSerializer, RatingSerializers)
+from ashop.models import Cart, Category, Order, Product, ProductImage, Rating
+from rest_framework.viewsets import ModelViewSet
+from core.models import CustomUser
 
 
 class CategoryViewSet(ModelViewSet):
@@ -25,10 +29,47 @@ class ProductViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         return {'request': self.request}
-
-    
-    
     
 class ProductImageViewSet(ModelViewSet):
     serializer_class = ProductImageSerializer
     queryset = ProductImage.objects.all()
+
+
+
+class RatingViewSet(ModelViewSet):
+    
+    def get_serializer_class(self):
+        return RatingSerializers
+    
+    def get_queryset(self):
+        return Rating.objects.filter(product_id=self.kwargs['product_pk'])
+
+    def get_serializer_context(self):
+        return {
+            'product_id':self.kwargs['product_pk']
+        }
+
+class OrderViewSet(ModelViewSet):
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        
+        if user.is_admin:
+            return Order.objects.all()
+
+        elif user.user_type =='student':
+            (student_id,created) = CustomUser.objects.only('id').get_or_create(id=user.id)
+            return Order.objects.filter(user_id = student_id)
+        else:
+            return None
+
+
+class EsewaViewSet(ModelViewSet):
+    def get(self,request,*args, **kwargs):
+        pass
+    
+    def post(self,*args, **kwargs):
+        pass
+    

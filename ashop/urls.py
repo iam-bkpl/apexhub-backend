@@ -1,22 +1,25 @@
 from django.urls import path,include
 from rest_framework.routers import DefaultRouter
 from rest_framework_nested import routers
-
 from . import views
 
 router = DefaultRouter()
-router.register('category', views.CategoryViewSet, basename='category')
-router.register('products', views.ProductViewSet, basename='product')
+router.register('categorys', views.CategoryViewSet, basename='categorys')
+router.register('products', views.ProductViewSet, basename='products')
+router.register('orders',views.OrderViewSet,basename='orders')
 
+router.register('esewa-request', views.EsewaViewSet,basename='esewa-request')
 product_router = routers.NestedDefaultRouter(router,'products', lookup='product')
 
-product_router.register(
-    'images', views.ProductImageViewSet,basename='product-image'
-)
 
+product_router.register(
+    'images', views.ProductImageViewSet,basename='product-images'
+)
+product_router.register('ratings', views.RatingViewSet,basename='product-ratings')
 
 urlpatterns = [
     path('',include(router.urls)),
+    # path('esewa-request/', view name='esewa-request'),
 ] + product_router.urls
 
 
