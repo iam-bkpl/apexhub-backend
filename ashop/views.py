@@ -4,9 +4,9 @@ from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db.models.aggregates import Count
-from ashop.serializers import (CollectionSerializer, OrderSerializer, ProductImageSerializer,
-    ProductSerializer, RatingSerializers)
-from ashop.models import Cart, Category, Order, Product, ProductImage, Rating
+from ashop.serializers import (CollectionSerializer, CommentSerialier, OrderSerializer,
+    ProductImageSerializer, ProductSerializer, RatingSerializer)
+from ashop.models import Cart, Category, Order, Product, ProductImage, Rating,Comment
 from rest_framework.viewsets import ModelViewSet
 from core.models import CustomUser
 
@@ -37,17 +37,35 @@ class ProductImageViewSet(ModelViewSet):
 
 
 class RatingViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
-        return RatingSerializers
+        return RatingSerializer
     
     def get_queryset(self):
         return Rating.objects.filter(product_id=self.kwargs['product_pk'])
 
     def get_serializer_context(self):
         return {
-            'product_id':self.kwargs['product_pk']
+            'product_id':self.kwargs['product_pk'],
+            'user_id':self.request.user.id
         }
+
+
+class CommentViewSet(ModelViewSet):
+    permission_classes=[IsAuthenticated]
+    
+    def get_serializer_class(self):
+        return CommentSerialier
+    
+    def get_queryset(self):
+        return Comment.objects.filter(product_id = self.kwargs['product_pk'])
+
+    def get_serializer_context(self):
+        return {
+            'product_id': self.kwargs['product_pk'],
+            'user_id' : self.request.user.id,
+                }
 
 class OrderViewSet(ModelViewSet):
     serializer_class = OrderSerializer

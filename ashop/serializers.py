@@ -1,6 +1,7 @@
 import django.db
 from rest_framework import serializers
-from ashop.models import Cart, Category, Order, OrderItem, Product, ProductImage, Rating
+from ashop.models import Cart, Category, Comment, Order, OrderItem, Product, ProductImage, Rating
+from manage import main
 
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,22 +20,39 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = ['id','image']
 
 
-class RatingSerializers(serializers.ModelSerializer):
+class RatingSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(read_only=True)
     class Meta:
         model = Rating
-        fields = ['id','user','rate','date_added']
+        fields = ['id','rate', 'user_id','date_added']
     
     def create(self, validated_data):
         product_id = self.context['product_id']
-        return Rating.objects.create(product_id=product_id, **validated_data)
+        user_id = self.context['user_id']
+        return Rating.objects.create(product_id=product_id,user_id=user_id, **validated_data)
     
-            
+    
+class CommentSerialier(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(read_only = True)
+    class Meta:
+        model = Comment
+        fields = ['id','user_id','text','date_added']
+        
+    def create(self, validated_data):
+        return Comment.objects.create(
+            user_id=self.context['user_id'],
+            product_id=self.context['product_id'],
+            **validated_data
+            )
+        
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only = True)
-    ratings = RatingSerializers(many=True, read_only = True)
+    ratings = RatingSerializer(many=True, read_only = True)
+    comments = CommentSerialier(many=True, read_only=True)
+    
     class Meta:
         model = Product
-        fields = ['id','name','slug','description','price','stock','date_added','is_active','category','images','ratings']
+        fields = ['id','name','slug','description','price','stock','date_added','is_active','category','images','ratings','comments']
         
 class SimpleProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,6 +65,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
         fields = ['id','product','quantity','price']
+        
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
