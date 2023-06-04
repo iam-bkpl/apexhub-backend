@@ -34,6 +34,8 @@ class ProductImageViewSet(ModelViewSet):
     serializer_class = ProductImageSerializer
     queryset = ProductImage.objects.all()
 
+    def get_serializer_context(self):
+        return {'product_id':self.kwargs['product_pk']}
 
 
 class RatingViewSet(ModelViewSet):

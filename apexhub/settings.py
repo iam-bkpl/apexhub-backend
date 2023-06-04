@@ -27,9 +27,9 @@ SECRET_KEY = 'django-insecure-)wywzecw&u76hp!@#$#xse6i+d*-se&$%arar3+eprk1c*lhz%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['apexhub.vercel.app' ,'apexhub-backend.vercel.app','*.vercel.app','bsatya.com.np']
+# ALLOWED_HOSTS = ['apexhub.vercel.app' ,'apexhub-backend.vercel.app','*.vercel.app','bsatya.com.np','127.0.0.1',]
 
-
+ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
@@ -101,7 +101,7 @@ WSGI_APPLICATION = 'apexhub.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'iambkpl',
+        'NAME': 'apexhub',
         'USER': 'iambkpl',
         'PASSWORD': 'lipak@123',
         'HOST': 'localhost'
@@ -181,7 +181,7 @@ REST_FRAMEWORK = {
 }
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=3)
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30)
 }
 
 DJOSER = {
