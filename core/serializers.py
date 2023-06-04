@@ -22,7 +22,7 @@ class StudentSerializer(serializers.ModelSerializer):
   user = serializers.CharField(read_only=True)
   class Meta:
     model = Student
-    fields = ['id','user','first_name','last_name','gender','address','program','enrollment_date']
+    fields = ['id','user','first_name','last_name','gender','address','program','enrollment_date','qr_code']
   
  
 class ExternalSerializer(serializers.ModelSerializer):

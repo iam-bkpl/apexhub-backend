@@ -96,6 +96,7 @@ class Student(models.Model):
     address = models.CharField(max_length=255, blank=True)
     program = models.CharField(max_length=255,choices=PROGRAM_CHOICES, blank=True)
     enrollment_date = models.DateTimeField(blank=True, null=True)
+    qr_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
     
     def save(self, *args, **kwargs):
         if not self.id:
