@@ -31,8 +31,8 @@ class CustomUser(AbstractBaseUser):
     )
     
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=255)
-    contact = models.CharField(max_length=255)
+    username = models.CharField(max_length=255, blank=True, null=True)
+    contact = models.CharField(max_length=255,blank=True, null=True)
     user_type = models.CharField(max_length=255, choices=USER_TYPE_CHOICES,default=USER_TYPE_STUDENT)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -90,30 +90,33 @@ class Student(models.Model):
         ('bba-bi', 'Bachelor of Business Administration BI'),
     )
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_student')
-    first_name = models.CharField(max_length=255, blank=True)
-    last_name = models.CharField(max_length=255, blank=True)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
-    address = models.CharField(max_length=255, blank=True)
-    program = models.CharField(max_length=255,choices=PROGRAM_CHOICES, blank=True)
+    first_name = models.CharField(max_length=255, blank=True, null=True)
+    last_name = models.CharField(max_length=255, blank=True,null=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    program = models.CharField(max_length=255,choices=PROGRAM_CHOICES, blank=True, null=True)
     enrollment_date = models.DateTimeField(blank=True, null=True)
     qr_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
     
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.enrollment_date = datetime.now()
-        return super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.id:
+    #         self.enrollment_date = datetime.now()
+    #     return super().save(*args, **kwargs)
     
     def __str__(self):
-        full_name = self.first_name + " " + self.last_name
-        return full_name
+        # full_name = self.first_name + " " + self.last_name
+        # return full_name
+        return self.user.email
     
+    def get_email_field_name(self):
+        return self.user.email
 
 class Acs(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_acs')
     website = models.URLField()
     
     def __str__(self):
-        return self.name
+        return self.user.email
     
     
 class External(models.Model):
@@ -123,10 +126,10 @@ class External(models.Model):
     phone_number = models.CharField(max_length=20)
     website = models.URLField(blank=True)
     description = models.TextField(blank=True)
-    created_at = models.DateField()
+    # created_at = models.DateField()
         
     def __str__(self):
-        return self.name
+        return self.user.email
     
 
         

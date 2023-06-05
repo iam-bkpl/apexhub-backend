@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from apexhub.settings import AUTH_USER_MODEL
+from core.models import Acs, External
 
 
     # job type 
@@ -31,7 +32,8 @@ class JobPost(models.Model):
     ]
     
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    company_name = models.CharField(max_length=255)
+    # company_name = models.CharField(max_length=255)
+    company = models.ForeignKey(External,on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)

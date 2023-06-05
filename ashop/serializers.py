@@ -1,7 +1,7 @@
 import django.db
 from rest_framework import serializers
 from ashop.models import Cart, Category, Comment, Order, OrderItem, Product, ProductImage, Rating
-from manage import main
+
 
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -82,3 +82,4 @@ class OrderSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Cart
 #         fields = ['id','items','total_price']
+

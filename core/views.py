@@ -9,10 +9,21 @@ from ashop.permissions import IsAdminOrReadOnly
 from .serializers import AcsSerializer, ExternalSerializer, StudentSerializer,CustomUserSerializer
 
 
+
+
+
+
 class CustomUserViewSet(ModelViewSet):
     serializer_class = CustomUserSerializer
     queryset = CustomUser.objects.all()
-
+    
+    def get_serializer_context(self):
+        return {
+                'user_id': self.request.user.id,
+                'user_type':self.request.user.user_type,
+                }
+    
+    
 class StudentViewSet(ModelViewSet):
  serializer_class = StudentSerializer
  queryset = Student.objects.all()
@@ -28,13 +39,13 @@ class StudentViewSet(ModelViewSet):
          return Response(serializers.data)
      elif request.method == 'PUT':
          serializers = StudentSerializer(student,
-         data = request.data)
+         data = request.data)   
          serializers.is_valid(raise_exception=True)
          serializers.save()
          return Response(serializers.data)
          
  
-class ExternalViewSet(CreateModelMixin,RetrieveModelMixin,UpdateModelMixin, GenericViewSet):
+class ExternalViewSet(ModelViewSet):
     queryset = External.objects.all()
     serializer_class = ExternalSerializer
     
