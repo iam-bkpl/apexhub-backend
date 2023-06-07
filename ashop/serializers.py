@@ -1,6 +1,6 @@
 import django.db
 from rest_framework import serializers
-from ashop.models import Cart, Category, Comment, Order, OrderItem, Product, ProductImage, Rating
+from ashop.models import Category, Comment, Order, OrderItem, Product, ProductImage, Rating
 
 
 class CollectionSerializer(serializers.ModelSerializer):

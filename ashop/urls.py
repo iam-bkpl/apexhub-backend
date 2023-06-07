@@ -9,7 +9,8 @@ router.register('products', views.ProductViewSet, basename='products')
 router.register('orders',views.OrderViewSet,basename='orders')
 
 
-router.register('esewa-request', views.EsewaViewSet,basename='esewa-request')
+
+# router.register('esewa-request', views.EsewaViewSet,basename='esewa-request')
 product_router = routers.NestedDefaultRouter(router,'products', lookup='product')
 
 

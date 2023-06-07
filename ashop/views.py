@@ -1,4 +1,6 @@
+import django.db
 import django.shortcuts
+import rest_framework.mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
@@ -6,9 +8,11 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db.models.aggregates import Count
 from ashop.serializers import (CollectionSerializer, CommentSerialier, OrderSerializer,
     ProductImageSerializer, ProductSerializer, RatingSerializer)
-from ashop.models import Cart, Category, Order, Product, ProductImage, Rating,Comment
+from ashop.models import  Category, Order, Product, ProductImage, Rating,Comment
 from rest_framework.viewsets import ModelViewSet
 from core.models import CustomUser
+
+
 
 
 class CategoryViewSet(ModelViewSet):
@@ -56,6 +60,7 @@ class RatingViewSet(ModelViewSet):
 
 class CommentViewSet(ModelViewSet):
     permission_classes=[IsAuthenticated]
+
     
     def get_serializer_class(self):
         return CommentSerialier
@@ -86,10 +91,10 @@ class OrderViewSet(ModelViewSet):
             return None
 
 
-class EsewaViewSet(ModelViewSet):
-    def get(self,request,*args, **kwargs):
-        pass
+# class EsewaViewSet(ModelViewSet):
+#     def get(self,request,*args, **kwargs):
+#         pass
     
-    def post(self,*args, **kwargs):
-        pass
+#     def post(self,*args, **kwargs):
+#         pass
     

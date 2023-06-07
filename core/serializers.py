@@ -40,7 +40,7 @@ class UserCreateSerializer(BaseUserCreateSerializer):
 
   
 class UserSerializer(BaseUserSerializer):
-  class Meta:
+  class Meta(BaseUserSerializer.Meta):
     fields = ['id','email','password','user_type']
   
 
@@ -69,9 +69,4 @@ class AcsSerializer(serializers.ModelSerializer):
   class Meta:
     model = Acs
     fields = ['id','user','website']
-    
-  
-# class UserSerializer(BaseUserSerializer):
-#   class Meta(BaseUserSerializer.Meta):
-#     fields = "__all__"
     

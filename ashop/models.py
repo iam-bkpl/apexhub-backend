@@ -19,7 +19,8 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     date_update = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
-
+    qr_code = models.ImageField(upload_to='orcodes/' )
+    
     def __str__(self):
         return self.name
     
@@ -54,6 +55,7 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.user} ordered and payment status is {self.payment_status}"
     
+
     
 class OrderItem(models.Model):
     order = models.ForeignKey(
@@ -70,24 +72,7 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.order}"
     
-    
 
-class Cart(models.Model):
-    date_created = models.DateTimeField(auto_now_add=True)
-
-
-class CartItem(models.Model):
-    cart = models.ForeignKey(Cart,
-                             on_delete=models.CASCADE,
-                             related_name='items')
-    product = models.ForeignKey(Product,
-                                on_delete=models.CASCADE,
-                                )
-    quantity = models.PositiveSmallIntegerField()
-    
-    class Meta:
-        unique_together = [['cart','product']]
-    
 
 class Rating(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -109,4 +94,23 @@ class Comment(models.Model):
     def __str__(self):
         return f"{self.user} commented on {self.product}"
     
+    
+    
+    
+
+# class Cart(models.Model):
+#     date_created = models.DateTimeField(auto_now_add=True)
+
+
+# class CartItem(models.Model):
+#     cart = models.ForeignKey(Cart,
+#                              on_delete=models.CASCADE,
+#                              related_name='items')
+#     product = models.ForeignKey(Product,
+#                                 on_delete=models.CASCADE,
+#                                 )
+#     quantity = models.PositiveSmallIntegerField()
+    
+#     class Meta:
+#         unique_together = [['cart','product']]
     
