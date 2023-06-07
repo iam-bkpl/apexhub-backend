@@ -10,6 +10,7 @@ class Category(models.Model):
     
 
 class Product(models.Model):
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
@@ -19,7 +20,7 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     date_update = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
-    qr_code = models.ImageField(upload_to='orcodes/' )
+    qr_code = models.ImageField(upload_to='orcodes/', blank=True, null=True )
     
     def __str__(self):
         return self.name
@@ -87,7 +88,7 @@ class Rating(models.Model):
     
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    product = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='comments')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,related_name='comments')
     date_added = models.DateTimeField(auto_now_add=True)
     text = models.TextField(blank=True)
     
@@ -95,22 +96,4 @@ class Comment(models.Model):
         return f"{self.user} commented on {self.product}"
     
     
-    
-    
-
-# class Cart(models.Model):
-#     date_created = models.DateTimeField(auto_now_add=True)
-
-
-# class CartItem(models.Model):
-#     cart = models.ForeignKey(Cart,
-#                              on_delete=models.CASCADE,
-#                              related_name='items')
-#     product = models.ForeignKey(Product,
-#                                 on_delete=models.CASCADE,
-#                                 )
-#     quantity = models.PositiveSmallIntegerField()
-    
-#     class Meta:
-#         unique_together = [['cart','product']]
     

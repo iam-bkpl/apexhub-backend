@@ -1,6 +1,8 @@
 import django.db
 from rest_framework import serializers
 from ashop.models import Category, Comment, Order, OrderItem, Product, ProductImage, Rating
+from core.serializers import CustomUserSerializer
+from populate_db import User
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -39,20 +41,22 @@ class CommentSerialier(serializers.ModelSerializer):
         fields = ['id','user_id','text','date_added']
         
     def create(self, validated_data):
-        return Comment.objects.create(
-            user_id=self.context['user_id'],
-            product_id=self.context['product_id'],
-            **validated_data
-            )
+        user_id = self.context['user_id']
+        product_id = self.context['product_id']
+        
+        return Comment.objects.create(user_id=user_id, product_id=product_id,**validated_data)
+        
+        
         
 class ProductSerializer(serializers.ModelSerializer):
-    images = ProductImageSerializer(many=True, read_only = True)
+    images = ProductImageSerializer(many=True,read_only=True)
     ratings = RatingSerializer(many=True, read_only = True)
-    comments = CommentSerialier(many=True, read_only=True)
+    comments = CommentSerialier(many=True, read_only = True)
+    # seller = CustomUserSerializer(read_only = True)
     
     class Meta:
         model = Product
-        fields = ['id','name','slug','description','price','stock','date_added','is_active','category','images','ratings','comments']
+        fields = ['id','seller', 'name','slug','description','price','stock','date_added','is_active','category','qr_code','images','ratings','comments']
         
 class SimpleProductSerializer(serializers.ModelSerializer):
     class Meta:

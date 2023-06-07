@@ -91,10 +91,3 @@ class OrderViewSet(ModelViewSet):
             return None
 
 
-# class EsewaViewSet(ModelViewSet):
-#     def get(self,request,*args, **kwargs):
-#         pass
-    
-#     def post(self,*args, **kwargs):
-#         pass
-    
