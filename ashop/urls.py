@@ -1,6 +1,7 @@
 from django.urls import path,include
 from rest_framework.routers import DefaultRouter
 from rest_framework_nested import routers
+from acs.views import JobVoteViewSet
 from . import views
 
 router = DefaultRouter()
@@ -19,7 +20,6 @@ product_router.register(
 )
 product_router.register('ratings', views.RatingViewSet,basename='product-ratings')
 product_router.register('comments',views.CommentViewSet,basename='product-comments')
-
 urlpatterns = [
     path('',include(router.urls)),
     # path('esewa-request/', view name='esewa-request'),

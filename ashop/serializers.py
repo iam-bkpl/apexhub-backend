@@ -47,7 +47,7 @@ class CommentSerialier(serializers.ModelSerializer):
         return Comment.objects.create(user_id=user_id, product_id=product_id,**validated_data)
         
         
-        
+            
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True,read_only=True)
     ratings = RatingSerializer(many=True, read_only = True)

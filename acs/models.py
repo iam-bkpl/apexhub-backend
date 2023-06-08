@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from apexhub.settings import AUTH_USER_MODEL
+from apexhub.settings import AUTH_USER_MODEL, MEDIA_ROOT
 from core.models import Acs, External
 
 
@@ -32,23 +32,30 @@ class JobPost(models.Model):
     ]
     
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    # company_name = models.CharField(max_length=255)
-    company = models.ForeignKey(External,on_delete=models.CASCADE)
+    company = models.CharField(max_length=255, default='acs')
+    # company = models.ForeignKey(External,on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
-    salary = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    salary = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     date_updated = models.DateTimeField(auto_now=True)
     location = models.CharField(max_length=255, blank=True)
     job_type = models.CharField(max_length=255, choices=JOB_TYPE_CHOICES, default=JOB_TYPE_ON_SITE)
     experience_level = models.CharField(max_length=255,choices=EXPERIENCE_LEVEL_CHOICES, default=EXPERIENCE_LEVEL_INTERNSHIP)
     link = models.URLField()
     expire_date = models.DateTimeField(auto_now=True)
-    
+
     def __str__(self):
         return self.title
 
+
+class JobVote(models.Model):
+    jobpost = models.ForeignKey(JobPost, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('jobpost','user')
 
 class JobApplication(models.Model):
     APPLICATION_STATUS_PENDING = 'pending'
