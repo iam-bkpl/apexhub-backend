@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',      
     'corsheaders',
     'rest_framework',
     'djoser',
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'acs',
     'ashop',
     'core',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -175,13 +177,14 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
 
     ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
     # 'DEFAULT_PERMISSION_CLASSES':[
     #     'rest_framework.permissions.IsAuthenticated',
     # ]
 }
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=30)
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=365)
 }
 
 DJOSER = {
@@ -196,3 +199,8 @@ DJOSER = {
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
 ]
+
+GRAPH_MODELS ={
+'all_applications': True,
+'graph_models': True,
+}

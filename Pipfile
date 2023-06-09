@@ -18,6 +18,10 @@ django-cors-headers = "*"
 gunicorn = "*"
 psycopg2 = "*"
 psycopg2-binary = "*"
+graphviz = "*"
+django-extensions = "*"
+pyparsing = "*"
+pydot = "*"
 
 [dev-packages]
 

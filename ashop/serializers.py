@@ -1,8 +1,7 @@
-import django.db
+
 from rest_framework import serializers
 from ashop.models import Category, Comment, Order, OrderItem, Product, ProductImage, Rating
 from core.serializers import CustomUserSerializer
-from populate_db import User
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -47,7 +46,7 @@ class CommentSerialier(serializers.ModelSerializer):
         return Comment.objects.create(user_id=user_id, product_id=product_id,**validated_data)
         
         
-            
+
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True,read_only=True)
     ratings = RatingSerializer(many=True, read_only = True)

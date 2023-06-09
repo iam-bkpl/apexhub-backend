@@ -1,22 +1,23 @@
-import django.db
-import django.shortcuts
-import rest_framework.mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
-from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db.models.aggregates import Count
 from ashop.serializers import (CollectionSerializer, CommentSerialier, OrderSerializer,
     ProductImageSerializer, ProductSerializer, RatingSerializer)
 from ashop.models import  Category, Order, Product, ProductImage, Rating,Comment
 from rest_framework.viewsets import ModelViewSet
 from core.models import CustomUser
-
-
-
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+from rest_framework.filters import SearchFilter, OrderingFilter
+from .filter import CategoryFilter
 
 class CategoryViewSet(ModelViewSet):
     serializer_class = CollectionSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['name']
+    # filterset_class = CategoryFilter
+    # search_fields = ['name','product_set__name']
     
     def get_queryset(self):
         return Category.objects.annotate(
@@ -29,8 +30,10 @@ class CategoryViewSet(ModelViewSet):
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.prefetch_related('images').all()
     serializer_class = ProductSerializer
-    search_fields =['name','description']
-
+    filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
+    # filterset_fields = ['name', 'seller', 'category']
+    search_fields = ['name','category__name']
+    ordering_fields = ['price', 'date_updated','date_added']
     def get_serializer_context(self):
         return {'request': self.request}
     
@@ -74,6 +77,7 @@ class CommentViewSet(ModelViewSet):
             'user_id' : self.request.user.id,
                 }
 
+
 class OrderViewSet(ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
@@ -91,3 +95,4 @@ class OrderViewSet(ModelViewSet):
             return None
 
 
+    

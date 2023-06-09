@@ -42,6 +42,7 @@ class JobPost(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     location = models.CharField(max_length=255, blank=True)
     job_type = models.CharField(max_length=255, choices=JOB_TYPE_CHOICES, default=JOB_TYPE_ON_SITE)
+    vacancy = models.IntegerField(default=1)
     experience_level = models.CharField(max_length=255,choices=EXPERIENCE_LEVEL_CHOICES, default=EXPERIENCE_LEVEL_INTERNSHIP)
     link = models.URLField()
     expire_date = models.DateTimeField(auto_now=True)
@@ -54,8 +55,8 @@ class JobVote(models.Model):
     jobpost = models.ForeignKey(JobPost, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = ('jobpost','user')
+    # class Meta:
+    #     unique_together = ('jobpost','user')
 
 class JobApplication(models.Model):
     APPLICATION_STATUS_PENDING = 'pending'
@@ -79,7 +80,7 @@ class JobApplication(models.Model):
     
     
     class Meta:
-        unique_together = ('user','job')
+        unique_together = ('user','job')  
         
     def __str__(self):
         return f'{self.user} applied for {self.job} on {self.date_applied}'
