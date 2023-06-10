@@ -14,7 +14,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
     date_added = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
@@ -35,9 +35,10 @@ class ProductImage(models.Model):
         Product, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(
         upload_to='product/images')
-    
+
 
 class Order(models.Model):
+    
     PAYMENT_STATUS_PENDING = 'P'
     PAYMENT_STATUS_COMPLETE = 'C'
     PAYMENT_STATUS_FAILED = 'F'
@@ -52,7 +53,8 @@ class Order(models.Model):
     payment_status = models.CharField(max_length=1,
                                       choices=PAYMENT_STATUS_CHOICES,
                                       default=PAYMENT_STATUS_PENDING)
-    
+    paid = models.BooleanField(default=False)
+
     def __str__(self):
         return f"{self.user} ordered and payment status is {self.payment_status}"
     
@@ -62,11 +64,11 @@ class OrderItem(models.Model):
     order = models.ForeignKey(
         Order,
         on_delete=models.PROTECT,
-        related_name='items'
+        related_name='items' 
     )
     product = models.ForeignKey(Product,
                                 on_delete=models.PROTECT,
-                                related_name='orderitems')
+                                related_name='order_items')
     quantity = models.PositiveSmallIntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     
@@ -84,8 +86,7 @@ class Rating(models.Model):
     def __str__(self):
         return f"{self.user} rated {self.rate} on {self.product}"
     
-    
-    
+        
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE,related_name='comments')
