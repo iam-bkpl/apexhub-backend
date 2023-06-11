@@ -24,6 +24,12 @@ class JobApplicationViewSet(ModelViewSet):
  ordering_fields = ['date_applied','date_review']
  filterset_fields = ['user','status']
  
+ def get_queryset(self):
+  user = self.request.user
+  
+  if user.is_staff:
+     return JobApplication.objects.all()
+  return JobApplication.objects.filter(user=user)
 
 class JobVoteViewSet(ModelViewSet):
   serializer_class = JobVoteSerializer

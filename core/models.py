@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,Permiss
 from datetime import datetime
 from apexhub.settings import AUTH_USER_MODEL
 from django.conf import settings
+from ashop.validators import file_size_validation
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password = None, **extra_fields):
@@ -34,7 +35,9 @@ class CustomUser(AbstractBaseUser):
     username = models.CharField(max_length=255, blank=True, null=True)
     contact = models.CharField(max_length=255,blank=True, null=True)
     user_type = models.CharField(max_length=255, choices=USER_TYPE_CHOICES,default=USER_TYPE_STUDENT)
-    avatar = models.ImageField(upload_to='avatar', null=True, blank=True)
+    avatar = models.ImageField(upload_to='avatar',
+                               validators=[file_size_validation],
+                               null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)

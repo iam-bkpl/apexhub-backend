@@ -22,6 +22,9 @@ graphviz = "*"
 django-extensions = "*"
 pyparsing = "*"
 pydot = "*"
+django-rest-swagger = "*"
+drf-spectacular = "*"
+drf-yasg = "*"
 
 [dev-packages]
 

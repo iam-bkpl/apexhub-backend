@@ -2,7 +2,8 @@ from django.db import models
 from django.conf import settings
 from apexhub.settings import AUTH_USER_MODEL, MEDIA_ROOT
 from core.models import Acs, External
-
+from ashop.validators import file_size_validation
+from django.core.validators import MinValueValidator,FileExtensionValidator
 
     # job type 
     
@@ -74,7 +75,9 @@ class JobApplication(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     date_applied = models.DateTimeField(auto_now_add=True)
     date_review = models.DateTimeField(auto_now=True)
-    resume = models.FileField(upload_to='resumes/',blank=True, null=True )
+    resume = models.FileField(upload_to='resumes/',
+                              validators=[file_size_validation, FileExtensionValidator(allowed_extensions=['pdf','png'])],
+                              blank=True, null=True )
     is_active  = models.BooleanField(default=True)
     status  = models.CharField(max_length=255, choices=STATUS_CHOICES, default=APPLICATION_STATUS_PENDING)
     

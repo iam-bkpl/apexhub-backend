@@ -1,4 +1,3 @@
-import rest_framework
 from rest_framework.response import Response
 from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveModelMixin
 from rest_framework.decorators import action
@@ -9,9 +8,14 @@ from ashop.permissions import IsAdminOrReadOnly
 from .serializers import AcsSerializer, ExternalSerializer, StudentSerializer,CustomUserSerializer
 
 
+from django.core.mail import send_mail, send_mass_mail, mail_admins , BadHeaderError
 
-
-
+def send_mail(request):
+    try : 
+        send_mail()
+    except BadHeaderError:
+        pass
+    pass
 
 class CustomUserViewSet(ModelViewSet):
     serializer_class = CustomUserSerializer

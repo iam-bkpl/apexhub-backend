@@ -39,11 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg',
+    'drf_spectacular',
     'django_filters',      
     'corsheaders',
     'rest_framework',
     'djoser',
     "debug_toolbar",
+    'rest_framework_swagger',
     'acs',
     'ashop',
     'core',
@@ -173,11 +176,14 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     # ],
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
 
-    ),
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    # ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' 
+    #  'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     # 'DEFAULT_PERMISSION_CLASSES':[
     #     'rest_framework.permissions.IsAuthenticated',
     # ]
@@ -204,3 +210,19 @@ GRAPH_MODELS ={
 'all_applications': True,
 'graph_models': True,
 }
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Apex hub',
+    'DESCRIPTION': 'Apexshop and Apex CS',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # 'SERVE_INCLUDE_SCHEMA': True,
+    'LOGIN_URL' : 'rest_framework:login'
+    # OTHER SETTINGS
+}
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = 'localhost'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = 'cnjckcwblkehckzy'
+EMAIL_PORT = 25
+DEFAULT_FROM_EMAIL = 'i.am.bhandari.kapil@gmail.com'

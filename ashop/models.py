@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
+from ashop.validators import file_size_validation
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -34,7 +35,8 @@ class ProductImage(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(
-        upload_to='product/images')
+        upload_to='product/images',
+        validators=[file_size_validation])
 
 
 class Order(models.Model):

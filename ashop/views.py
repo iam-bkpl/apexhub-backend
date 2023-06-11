@@ -23,8 +23,8 @@ class CategoryViewSet(ModelViewSet):
         return Category.objects.annotate(
             products_count = Count('products')).all()
     
-    # def get_serializer_class(self):
-    #     return CollectionSerializer
+    def get_serializer_class(self):
+        return CollectionSerializer
 
 
 class ProductViewSet(ModelViewSet):
@@ -42,7 +42,9 @@ class ProductImageViewSet(ModelViewSet):
     queryset = ProductImage.objects.all()
 
     def get_serializer_context(self):
-        return {'product_id':self.kwargs['product_pk']}
+        return {  
+            'product_id':self.kwargs['product_pk']
+            }
 
 
 class RatingViewSet(ModelViewSet):
@@ -95,4 +97,4 @@ class OrderViewSet(ModelViewSet):
             return None
 
 
-                
+                 
