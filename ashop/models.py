@@ -41,7 +41,7 @@ class ProductImage(models.Model):
         validators=[file_size_validation])
 
 
-class Order(models.Model):
+class OrderItem(models.Model):
     PAYMENT_STATUS_PENDING = 'P'
     PAYMENT_STATUS_COMPLETE = 'C'
     PAYMENT_STATUS_FAILED = 'F'
@@ -63,11 +63,24 @@ class Order(models.Model):
         return f"{self.user} ordered and payment status is {self.payment_status}"
     
 class Payment(models.Model):
+    PAYMENT_METHOD_WALLET = 'wallet'
+    PAYMENT_METHOD_BANK_TRANSFER = 'bank_transfer'
+    PAYMENT_METHOD_CASH_IN_HAND = 'cash_in_hand'
+    
+    PAYMENT_METHOD_CHOICES = [
+        (PAYMENT_METHOD_WALLET, 'Wallet Payments'),
+        (PAYMENT_METHOD_BANK_TRANSFER, 'Bank Transfer'),
+        (PAYMENT_METHOD_CASH_IN_HAND, 'Cash in Hand')
+    ]
+
+
+
     buyer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     order = models.OneToOneField(Product, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_created=True)
-    payment_method = models.CharField(max_length=255)
+    payment_method = models.CharField(max_length=255, choices=PAYMENT_METHOD_CHOICES, default=PAYMENT_METHOD_CASH_IN_HAND)
     amount = models.DecimalField(max_digits=10,decimal_places=2)
+
     
     def __str__(self):
         return f"Payment by {self.buyer} | Order: {self.order}"

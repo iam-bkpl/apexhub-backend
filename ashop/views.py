@@ -4,7 +4,7 @@ from rest_framework.generics import ListCreateAPIView
 from django.db.models.aggregates import Count
 from ashop.serializers import (CollectionSerializer, CommentSerialier, OrderSerializer,
     ProductImageSerializer, ProductSerializer, RatingSerializer)
-from ashop.models import  Category, Order, Product, ProductImage, Rating,Comment
+from ashop.models import  Category, OrderItem, Product, ProductImage, Rating,Comment
 from rest_framework.viewsets import ModelViewSet
 from core.models import CustomUser
 from django_filters.rest_framework import DjangoFilterBackend
