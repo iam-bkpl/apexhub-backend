@@ -22,7 +22,8 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     date_update = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
-    qr_code = models.ImageField(upload_to='orcodes/', blank=True, null=True )
+    qr_code = models.ImageField(upload_to='qrcodes/', blank=True, null=True )
+
     
     def __str__(self):
         return self.name
@@ -51,6 +52,7 @@ class Order(models.Model):
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    # product = models.
     date_placed = models.DateTimeField(auto_now_add=True)
     payment_status = models.CharField(max_length=1,
                                       choices=PAYMENT_STATUS_CHOICES,
@@ -67,7 +69,8 @@ class Payment(models.Model):
     payment_method = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10,decimal_places=2)
     
-    
+    def __str__(self):
+        return f"Payment by {self.buyer} | Order: {self.order}"
     
 # class OrderItem(models.Model):
 #     order = models.ForeignKey(
