@@ -2,7 +2,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
 from django.db.models.aggregates import Count
-from ashop.serializers import (CollectionSerializer, CommentSerialier, OrderSerializer,
+from ashop.serializers import (CollectionSerializer, CommentSerialier, OrderItemSerializer,
     ProductImageSerializer, ProductSerializer, RatingSerializer)
 from ashop.models import  Category, OrderItem, Product, ProductImage, Rating,Comment
 from rest_framework.viewsets import ModelViewSet
@@ -80,19 +80,19 @@ class CommentViewSet(ModelViewSet):
                 }
 
 
-class OrderViewSet(ModelViewSet):
-    serializer_class = OrderSerializer
+class OrderItemViewSet(ModelViewSet):
+    serializer_class = OrderItemSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
         
         if user.is_admin:
-            return Order.objects.all()
+            return OrderItem.objects.all()
 
         elif user.user_type =='student':
             (student_id,created) = CustomUser.objects.only('id').get_or_create(id=user.id)
-            return Order.objects.filter(user_id = student_id)
+            return OrderItem.objects.filter(user_id = student_id)
         else:
             return None
 

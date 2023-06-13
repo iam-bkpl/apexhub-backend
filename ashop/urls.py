@@ -12,7 +12,7 @@ from . import views
 router = DefaultRouter()
 router.register('categorys', views.CategoryViewSet, basename='categorys')
 router.register('products', views.ProductViewSet, basename='products')
-router.register('orders',views.OrderViewSet,basename='orders')
+router.register('orders',views.OrderItemViewSet,basename='orders')
 
 
 

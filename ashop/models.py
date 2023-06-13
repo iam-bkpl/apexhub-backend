@@ -53,7 +53,7 @@ class OrderItem(models.Model):
 
     buyer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     product = models.OneToOneField(Product, on_delete=models.CASCADE)
-    date_placed = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
     payment_status = models.CharField(max_length=1,
                                       choices=PAYMENT_STATUS_CHOICES,
                                       default=PAYMENT_STATUS_PENDING)
