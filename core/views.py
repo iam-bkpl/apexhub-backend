@@ -7,7 +7,6 @@ from core.models import Acs, CustomUser, External, Student
 from ashop.permissions import IsAdminOrReadOnly
 from .serializers import AcsSerializer, ExternalSerializer, StudentSerializer,CustomUserSerializer
 
-
 from django.core.mail import send_mail, send_mass_mail, mail_admins , BadHeaderError
 
 def send_mail(request):

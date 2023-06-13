@@ -78,7 +78,6 @@ class OrderItem(models.Model):
         return f"{self.order}"
     
 
-
 class Rating(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')
