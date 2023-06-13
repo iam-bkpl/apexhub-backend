@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 from ashop.validators import file_size_validation
+from apexhub.settings import AUTH_USER_MODEL
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -40,7 +41,6 @@ class ProductImage(models.Model):
 
 
 class Order(models.Model):
-    
     PAYMENT_STATUS_PENDING = 'P'
     PAYMENT_STATUS_COMPLETE = 'C'
     PAYMENT_STATUS_FAILED = 'F'
@@ -60,22 +60,29 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.user} ordered and payment status is {self.payment_status}"
     
-
+class Payment(models.Model):
+    buyer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    order = models.OneToOneField(Product, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_created=True)
+    payment_method = models.CharField(max_length=255)
+    amount = models.DecimalField(max_digits=10,decimal_places=2)
     
-class OrderItem(models.Model):
-    order = models.ForeignKey(
-        Order,
-        on_delete=models.PROTECT,
-        related_name='items' 
-    )
-    product = models.ForeignKey(Product,
-                                on_delete=models.PROTECT,
-                                related_name='order_items')
-    quantity = models.PositiveSmallIntegerField()
-    price = models.DecimalField(max_digits=6, decimal_places=2)
     
-    def __str__(self):
-        return f"{self.order}"
+    
+# class OrderItem(models.Model):
+#     order = models.ForeignKey(
+#         Order,
+#         on_delete=models.PROTECT,
+#         related_name='items' 
+#     )
+#     product = models.ForeignKey(Product,
+#                                 on_delete=models.PROTECT,
+#                                 related_name='order_items')
+#     quantity = models.PositiveSmallIntegerField()
+#     price = models.DecimalField(max_digits=6, decimal_places=2)
+    
+#     def __str__(self):
+#         return f"{self.order}"
     
 
 class Rating(models.Model):

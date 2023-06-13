@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from ashop.models import Category, Comment, Order, OrderItem, Product, ProductImage, Rating
+from ashop.models import Category, Comment, Order, Product, ProductImage, Rating
 from core.serializers import CustomUserSerializer
 
 
@@ -63,15 +63,15 @@ class SimpleProductSerializer(serializers.ModelSerializer):
         fields = ['id','name','price']
     
     
-class OrderItemSerializer(serializers.ModelSerializer):
-    product = SimpleProductSerializer()
-    class Meta:
-        model = OrderItem
-        fields = ['id','product','quantity','price']
+# class OrderItemSerializer(serializers.ModelSerializer):
+#     product = SimpleProductSerializer()
+#     class Meta:
+#         model = OrderItem
+#         fields = ['id','product','quantity','price']
         
 
 class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True)
+    # items = OrderItemSerializer(many=True)
     class Meta:
         model = Order
         fields = ['id','user','payment_status','items','date_placed']
