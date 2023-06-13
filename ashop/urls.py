@@ -23,9 +23,11 @@ products_router = routers.NestedDefaultRouter(
 products_router.register(
     'images', views.ProductImageViewSet, basename='product-images')
 
-
 products_router.register('ratings', views.RatingViewSet,basename='product-ratings')
 products_router.register('comments',views.CommentViewSet,basename='product-comments')
+
+products_router.register('orderitems',views.OrderItemViewSet,basename='product-orderitems')
+products_router.register('payments',views.PaymentViewSet, basename='product-payments')
 
 urlpatterns = [
     path('',include(router.urls)),

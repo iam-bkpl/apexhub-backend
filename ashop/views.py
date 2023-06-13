@@ -95,6 +95,11 @@ class OrderItemViewSet(ModelViewSet):
             return OrderItem.objects.filter(buyer_id = student_id)
         else:
             return None
+        
+    def get_serializer_context(self):
+        return {'product_id':self.kwargs['product_pk']
+                
+                }
 
 class PaymentViewSet(ModelViewSet):
     serializer_class = PaymentSerializer

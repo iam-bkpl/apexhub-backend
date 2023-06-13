@@ -60,7 +60,7 @@ class OrderItem(models.Model):
     paid = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.user} ordered and payment status is {self.payment_status}"
+        return f"{self.buyer} ordered and payment status is {self.payment_status}"
     
 class Payment(models.Model):
     PAYMENT_METHOD_WALLET = 'wallet'
@@ -77,7 +77,7 @@ class Payment(models.Model):
 
     buyer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     order = models.OneToOneField(Product, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_created=True)
+    date = models.DateTimeField(auto_now_add=True)
     payment_method = models.CharField(max_length=255, choices=PAYMENT_METHOD_CHOICES, default=PAYMENT_METHOD_CASH_IN_HAND)
     amount = models.DecimalField(max_digits=10,decimal_places=2)
 

@@ -71,17 +71,21 @@ class SimpleProductSerializer(serializers.ModelSerializer):
         
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    product = ProductSerializer()
+    # product = ProductSerializer(read_only=True)
     class Meta:
         model = OrderItem
-        fields = ['id','buyer','product','date','payment_status','paid']
+        fields = ['id','buyer','product_id','date','payment_status','paid']
         
+    def create(self, validated_data):
+        product_id = self.context['product_id']
+        
+        return OrderItem.objects.create(product_id=product_id,**validated_data)
 
 class PaymentSerializer(serializers.ModelSerializer):
-    order = OrderItemSerializer()
+    order = OrderItemSerializer(read_only=True)
     class Meta:
         model = Payment
-        fields = ['id','buyer','order','date','payment_method','amount']
+        fields = ['id','order','payment_method','amount']
 
 
 
