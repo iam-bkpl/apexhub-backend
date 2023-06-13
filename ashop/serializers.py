@@ -71,13 +71,14 @@ class SimpleProductSerializer(serializers.ModelSerializer):
         
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    # items = OrderItemSerializer(many=True)
+    product = ProductSerializer()
     class Meta:
         model = OrderItem
         fields = ['id','buyer','product','date','payment_status','paid']
         
 
 class PaymentSerializer(serializers.ModelSerializer):
+    order = OrderItemSerializer()
     class Meta:
         model = Payment
         fields = ['id','buyer','order','date','payment_method','amount']

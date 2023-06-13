@@ -3,12 +3,12 @@ from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
 from django.db.models.aggregates import Count
 from ashop.serializers import (CollectionSerializer, CommentSerialier, OrderItemSerializer,
-    ProductImageSerializer, ProductSerializer, RatingSerializer)
-from ashop.models import  Category, OrderItem, Product, ProductImage, Rating,Comment
+    PaymentSerializer, ProductImageSerializer, ProductSerializer, RatingSerializer)
+from ashop.models import Category, Comment, OrderItem, Payment, Product, ProductImage, Rating
 from rest_framework.viewsets import ModelViewSet
 from core.models import CustomUser
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
+import rest_framework
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .filter import CategoryFilter
 
@@ -92,9 +92,23 @@ class OrderItemViewSet(ModelViewSet):
 
         elif user.user_type =='student':
             (student_id,created) = CustomUser.objects.only('id').get_or_create(id=user.id)
-            return OrderItem.objects.filter(user_id = student_id)
+            return OrderItem.objects.filter(buyer_id = student_id)
         else:
             return None
 
-
+class PaymentViewSet(ModelViewSet):
+    serializer_class = PaymentSerializer
+    permission_classes =[IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user
+        
+        if user.is_admin:
+            return Payment.objects.all()
+        
+        elif user.user_type =='student':
+            (student_id, created) = CustomUser.objects.only('id').get_or_create(id=user.id)
+            return Payment.objects.filter(buyer_id = student_id)
+        else:
+            return None
                  
