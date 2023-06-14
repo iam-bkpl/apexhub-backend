@@ -1,7 +1,9 @@
 
+from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from ashop.models import Category, Comment, OrderItem, Payment, Product, ProductImage, Rating
 from core.serializers import CustomUserSerializer
+from core.models import CustomUser
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -51,7 +53,7 @@ class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True,read_only=True)
     ratings = RatingSerializer(many=True, read_only = True)
     comments = CommentSerialier(many=True, read_only = True)
-    # seller = CustomUserSerializer(read_only = True)
+    seller = CustomUserSerializer(read_only = True)
     
     class Meta:
         model = Product
@@ -60,7 +62,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class SimpleProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id','name','price']
+        fields = ['id','name','price','seller']
     
     
 # class OrderItemSerializer(serializers.ModelSerializer):
@@ -71,15 +73,39 @@ class SimpleProductSerializer(serializers.ModelSerializer):
         
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    # product = ProductSerializer(read_only=True)
+    product  = SimpleProductSerializer(read_only=True)
+    buyer = CustomUserSerializer(read_only=True)
+    # price = serializers.SerializerMethodField()
+    
+    # def get_price(self, product):
+    #     return product.price
+    
     class Meta:
         model = OrderItem
-        fields = ['id','buyer','product_id','date','payment_status','paid']
+        fields = ['id','buyer','product','date','payment_status','paid']
+        
         
     def create(self, validated_data):
-        product_id = self.context['product_id']
+        buyer_id = self.context['buyer_id']
         
-        return OrderItem.objects.create(product_id=product_id,**validated_data)
+        return OrderItem.objects.create(buyer_id=buyer_id,**validated_data)
+    
+    # try :     
+    #     def create(self, validated_data):
+    #         product_id = self.context['product_id']
+    #         buyer_id = self.context['buyer_id']
+
+    #         return OrderItem.objects.create(buyer_id=buyer_id, product_id=product_id,**validated_data)
+    # except:
+    #     raise ValidationError("Already placed the order")
+    #     # return OrderItem.objects.create(product_id=product_id,buyer_id=buyer_id ,**validated_data)
+
+
+# class GetOrderSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = OrderItem
+#         fields = ['id','product_id',;]
+
 
 class PaymentSerializer(serializers.ModelSerializer):
     order = OrderItemSerializer(read_only=True)
@@ -88,8 +114,13 @@ class PaymentSerializer(serializers.ModelSerializer):
         fields = ['id','order','payment_method','amount']
 
 
-
-
+    def create(self, validated_data):
+        # buyer =  CustomUser.objects.get(id= self.context['buyer_id'])
+        # order = OrderItem.objects.get(id=self.context['order_id'])
+        buyer_id = self.context['buyer_id']
+        order_id = self.context['order_id']
+        
+        return Payment.objects.create(buyer_id=buyer_id,order_id=order_id,**validated_data)
         
 # class CartSerializer(serializers.ModelSerializer):
 #     # id =  serializers.IntegerField()

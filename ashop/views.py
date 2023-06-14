@@ -2,8 +2,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
 from django.db.models.aggregates import Count
-from ashop.serializers import (CollectionSerializer, CommentSerialier, OrderItemSerializer,
-    PaymentSerializer, ProductImageSerializer, ProductSerializer, RatingSerializer)
+from ashop.serializers import (CollectionSerializer, CommentSerialier,
+    OrderItemSerializer, PaymentSerializer, ProductImageSerializer, ProductSerializer,
+    RatingSerializer)
 from ashop.models import Category, Comment, OrderItem, Payment, Product, ProductImage, Rating
 from rest_framework.viewsets import ModelViewSet
 from core.models import CustomUser
@@ -96,13 +97,23 @@ class OrderItemViewSet(ModelViewSet):
         else:
             return None
         
+    # def get_serializer_class(self):
+    #     if self.request.method == 'POST':
+    #         return OrderItemSerializer
+        
+    #     elif self.request.method == 'GET':
+    #         return GetOrderSerializer
+        
+        
     def get_serializer_context(self):
-        return {'product_id':self.kwargs['product_pk']
-                
+        return {
+            'buyer_id':self.request.user.id,
                 }
 
+
+
 class PaymentViewSet(ModelViewSet):
-    serializer_class = PaymentSerializer
+    serializer_class = PaymentSerializer    
     permission_classes =[IsAuthenticated]
     
     def get_queryset(self):
@@ -110,10 +121,16 @@ class PaymentViewSet(ModelViewSet):
         
         if user.is_admin:
             return Payment.objects.all()
-        
+
         elif user.user_type =='student':
             (student_id, created) = CustomUser.objects.only('id').get_or_create(id=user.id)
             return Payment.objects.filter(buyer_id = student_id)
         else:
             return None
                  
+                 
+    def get_serializer_context(self):
+        return {
+            'buyer_id':self.request.user.id,
+            'order_id':self.kwargs['order_pk']
+            }

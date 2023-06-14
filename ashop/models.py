@@ -51,7 +51,7 @@ class OrderItem(models.Model):
         (PAYMENT_STATUS_FAILED, 'Failed')
     ]
 
-    buyer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    buyer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,related_name='orderitems')
     product = models.OneToOneField(Product, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     payment_status = models.CharField(max_length=1,
@@ -76,7 +76,7 @@ class Payment(models.Model):
 
 
     buyer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    order = models.OneToOneField(Product, on_delete=models.CASCADE)
+    order = models.OneToOneField(OrderItem, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     payment_method = models.CharField(max_length=255, choices=PAYMENT_METHOD_CHOICES, default=PAYMENT_METHOD_CASH_IN_HAND)
     amount = models.DecimalField(max_digits=10,decimal_places=2)
