@@ -109,9 +109,10 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class PaymentSerializer(serializers.ModelSerializer):
     order = OrderItemSerializer(read_only=True)
+
     class Meta:
         model = Payment
-        fields = ['id','order','payment_method','amount']
+        fields = ['id','order','payment_method','amount','proof']
 
 
     def create(self, validated_data):
@@ -119,6 +120,9 @@ class PaymentSerializer(serializers.ModelSerializer):
         # order = OrderItem.objects.get(id=self.context['order_id'])
         buyer_id = self.context['buyer_id']
         order_id = self.context['order_id']
+        
+        order_item = OrderItem.objects.filter(id=order_id)
+        # validated_data['amount'] = order_item.product.price
         
         return Payment.objects.create(buyer_id=buyer_id,order_id=order_id,**validated_data)
         

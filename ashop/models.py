@@ -52,7 +52,7 @@ class OrderItem(models.Model):
     ]
 
     buyer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,related_name='orderitems')
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE,related_name='orderitems')
     date = models.DateTimeField(auto_now_add=True)
     payment_status = models.CharField(max_length=1,
                                       choices=PAYMENT_STATUS_CHOICES,
@@ -80,7 +80,7 @@ class Payment(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     payment_method = models.CharField(max_length=255, choices=PAYMENT_METHOD_CHOICES, default=PAYMENT_METHOD_CASH_IN_HAND)
     amount = models.DecimalField(max_digits=10,decimal_places=2)
-
+    proof = models.ImageField(upload_to='payment_bills',blank=True,null=True)
     
     def __str__(self):
         return f"Payment by {self.buyer} | Order: {self.order}"

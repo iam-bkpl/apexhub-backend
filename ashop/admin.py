@@ -12,11 +12,15 @@ class ProductAdmin(admin.ModelAdmin):
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ['id','buyer','product','payment_status']
     
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ['buyer','order','date','payment_method','amount']
+    
+    
 admin.site.register(Category)
 admin.site.register(Product,ProductAdmin)
 admin.site.register(ProductImage)
 admin.site.register(OrderItem,OrderItemAdmin)
-admin.site.register(Payment )
+admin.site.register(Payment,PaymentAdmin )
 admin.site.register(Rating)
 admin.site.register(Comment)
 # admin.site.register(Cart)
