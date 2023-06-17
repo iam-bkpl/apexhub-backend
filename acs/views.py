@@ -1,7 +1,8 @@
 
 from rest_framework.viewsets import ModelViewSet
 from acs.models import JobApplication, JobVote
-from acs.serializers import JobApplicationSerializer, JobVoteSerializer
+from acs.serializers import (JobApplicationCreateSerializer, JobApplicationSerializer,
+  JobVoteSerializer)
 from . models import JobPost
 from . serializers import JobPostSerializer
 from rest_framework import filters
@@ -24,19 +25,38 @@ class JobPostViewSet(ModelViewSet):
     }
  
 class JobApplicationViewSet(ModelViewSet):
- serializer_class = JobApplicationSerializer
- queryset = JobApplication.objects.all()
- filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
- search_fields = ['user']
- ordering_fields = ['date_applied','date_review']
- filterset_fields = ['user','status']
+  serializer_class = JobApplicationSerializer
+#  queryset = JobApplication.objects.all()
+  filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
+  search_fields = ['user']
+  ordering_fields = ['date_applied','date_review']
+  filterset_fields = ['user','status']
  
- def get_queryset(self):
-  user = self.request.user
+  def get_queryset(self):
+    user = self.request.user
+    if user.is_staff:
+      return JobApplication.objects.all()
+    return JobApplication.objects.filter(user=user)
   
-  if user.is_staff:
-     return JobApplication.objects.all()
-  return JobApplication.objects.filter(user=user)
+  def get_serializer_context(self):
+    return {
+          'jobpost_id' : self.kwargs['jobpost_pk'],
+          'user_id': self.request.user.id,
+          }
+ 
+  def get_serializer_class(self):
+    if self.request.method ==  'POST':
+      return JobApplicationCreateSerializer
+    else:
+      return JobApplicationSerializer
+
+ 
+  
+
+
+
+
+
 
 class JobVoteViewSet(ModelViewSet):
   serializer_class = JobVoteSerializer
@@ -45,7 +65,7 @@ class JobVoteViewSet(ModelViewSet):
   def get_serializer_context(self):
    return {
      'jobpost_id':self.kwargs['jobpost_pk'],
-     'user_id': self.request.user.id,
+     'user_id':self.request.user.id  # type: ignore
    }
    
    

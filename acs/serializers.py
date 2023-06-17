@@ -1,13 +1,13 @@
 from django.db.models import Count
 from rest_framework import serializers
 from .models import JobApplication, JobPost, JobVote
-from core.serializers import CustomUserSerializer, ExternalSerializer
+from core.serializers import CustomUserSerializer, ExternalSerializer, UserSerializer
 from rest_framework.response import Response
 
 class JobVoteSerializer(serializers.ModelSerializer):
   class Meta:
-    model = JobVote
-    fields = ['id','user','jobpost']
+      model = JobVote
+      fields = ['id','user','jobpost']
 
   def validate(self, attrs):
     user = attrs['user']
@@ -65,9 +65,24 @@ class JobPostSerializer(serializers.ModelSerializer):
     return JobPost.objects.create(user=user, **validated_data)
 
 
+
+class JobApplicationCreateSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = JobApplication
+    fields = ['resume',]
+    
+  def create(self, validated_data):
+    job_id = self.context['jobpost_id']
+    user_id = self.context['user_id']
+
+    return JobApplication.objects.create(job_id=job_id,user_id=user_id,**validated_data)
+
+
 class JobApplicationSerializer(serializers.ModelSerializer):
+ job = JobPostSerializer()
+ user = UserSerializer()
+ 
  class Meta:
   model = JobApplication
-  fields = ['job','user','date_review', 'resume','is_active','status']
- 
+  fields = ['job' ,'user', 'date_review', 'resume','is_active','status']
  

@@ -10,7 +10,6 @@ router.register('jobpost', views.JobPostViewSet, basename='jobpost')
 
 jobpost_router = routers.NestedDefaultRouter(router, 'jobpost',lookup='jobpost')
 
-
 jobpost_router.register(
   'applications', views.JobApplicationViewSet, basename='jobpost-applications'
 )
