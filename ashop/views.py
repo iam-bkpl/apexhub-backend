@@ -108,6 +108,7 @@ class OrderItemViewSet(ModelViewSet):
     def get_serializer_context(self):
         return {
             'buyer_id':self.request.user.id,
+            'product_id':self.kwargs['product_pk']
                 }
 
 

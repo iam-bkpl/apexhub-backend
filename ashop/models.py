@@ -23,7 +23,7 @@ class Product(models.Model):
     date_update = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
     qr_code = models.ImageField(upload_to='qrcodes/', blank=True, null=True )
-
+    
     
     def __str__(self):
         return self.name

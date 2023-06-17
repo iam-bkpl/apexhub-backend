@@ -76,7 +76,12 @@ class OrderItemSerializer(serializers.ModelSerializer):
     product  = SimpleProductSerializer(read_only=True)
     buyer = CustomUserSerializer(read_only=True)
     # price = serializers.SerializerMethodField()
+    # total_amount = serializers.SerializerMethodField()
     
+    # def get_total_amount(self, order_item):
+    #     product_id = self.context.get('product_id')
+    #     product = Product.objects.get(id=product_id)
+    #     return product.price
     # def get_price(self, product):
     #     return product.price
     
@@ -87,8 +92,8 @@ class OrderItemSerializer(serializers.ModelSerializer):
         
     def create(self, validated_data):
         buyer_id = self.context['buyer_id']
-        
-        return OrderItem.objects.create(buyer_id=buyer_id,**validated_data)
+        product_id = self.context['product_id']
+        return OrderItem.objects.create(buyer_id=buyer_id,product_id=product_id, **validated_data)
     
     # try :     
     #     def create(self, validated_data):
