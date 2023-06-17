@@ -14,26 +14,7 @@ class JobVoteSerializer(serializers.ModelSerializer):
     jobpost = attrs['jobpost']
     print("validate function ")
     
-    # try:
-    #   job_vote = JobVote.objects.filter(user=user, jobpost=jobpost)
-    #   job_vote.delete()
-    #   raise serializers.ValidationError('job vote deleted')
-    
-    # except JobVote.DoesNotExist:
-    #   return attrs
-    
-    # try:
-    #         job_vote = JobVote.objects.get(user=user, jobpost=jobpost)
-    #         if self.instance and self.instance.pk == job_vote.pk:
-    #             # Ignore the existing vote if it belongs to the same instance being updated
-    #             pass
-    #         else:
-    #             job_vote.delete()
-    # except JobVote.DoesNotExist:
-    #         pass
-    
     if JobVote.objects.filter(user=user, jobpost=jobpost).exists():
-      print("job post exist")
       JobVote.objects.filter(user=user, jobpost=jobpost).delete()
       raise serializers.ValidationError({'detail':'job vote deleted'})
     else:
@@ -74,8 +55,11 @@ class JobApplicationCreateSerializer(serializers.ModelSerializer):
   def create(self, validated_data):
     job_id = self.context['jobpost_id']
     user_id = self.context['user_id']
-
-    return JobApplication.objects.create(job_id=job_id,user_id=user_id,**validated_data)
+    
+    if JobApplication.objects.filter(job_id=job_id, user_id=user_id).exists():
+      raise serializers.ValidationError('Already applied for this Job ')
+    else:
+      return JobApplication.objects.create(job_id=job_id,user_id=user_id,**validated_data)
 
 
 class JobApplicationSerializer(serializers.ModelSerializer):

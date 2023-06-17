@@ -82,8 +82,8 @@ class JobApplication(models.Model):
     status  = models.CharField(max_length=255, choices=STATUS_CHOICES, default=APPLICATION_STATUS_PENDING)
     
     
-    class Meta:
-        unique_together = ('user','job')  
+    # class Meta:
+    #     unique_together = ('user','job')  
         
     def __str__(self):
         return f'{self.user} applied for {self.job} on {self.date_applied}'
