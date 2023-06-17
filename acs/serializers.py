@@ -52,13 +52,17 @@ class JobPostSerializer(serializers.ModelSerializer):
   # user = serializers.ReadOnlyField()
 
   vote_count = serializers.SerializerMethodField()
-      
+  
   def get_vote_count(self, job_post):
     return job_post.jobvote_set.count()
   
   class Meta:
     model = JobPost
-    fields = ['id','user','title','company','vacancy','description','date_added','is_active','salary','location','job_type','experience_level','link','expire_date','vote_count']
+    fields = ['id','title','company','vacancy','description','date_added','is_active','salary','location','job_type','experience_level','link','expire_date','vote_count']
+
+  def create(self, validated_data):
+    user = self.context['user']
+    return JobPost.objects.create(user=user, **validated_data)
 
 
 class JobApplicationSerializer(serializers.ModelSerializer):

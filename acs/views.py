@@ -16,6 +16,13 @@ class JobPostViewSet(ModelViewSet):
  search_fields = ['company','title','description','experience_level','location']
  ordering_fields = ['date_added','salary','date_updated','expire_date']
  
+ def get_serializer_context(self):
+  user = self.request.user
+   
+  return {
+      'user':user
+    }
+ 
 class JobApplicationViewSet(ModelViewSet):
  serializer_class = JobApplicationSerializer
  queryset = JobApplication.objects.all()

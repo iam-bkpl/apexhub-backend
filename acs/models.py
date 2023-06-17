@@ -45,7 +45,7 @@ class JobPost(models.Model):
     job_type = models.CharField(max_length=255, choices=JOB_TYPE_CHOICES, default=JOB_TYPE_ON_SITE)
     vacancy = models.IntegerField(default=1)
     experience_level = models.CharField(max_length=255,choices=EXPERIENCE_LEVEL_CHOICES, default=EXPERIENCE_LEVEL_INTERNSHIP)
-    link = models.URLField()
+    link = models.URLField(blank=True, null=True)
     expire_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
