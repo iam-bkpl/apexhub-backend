@@ -1,8 +1,12 @@
+from django.core.mail import send_mail, BadHeaderError, send_mass_mail, EmailMessage
 from django.db.models import Count
 from rest_framework import serializers
+from core.models import CustomUser
 from .models import JobApplication, JobPost, JobVote
 from core.serializers import CustomUserSerializer, ExternalSerializer, UserSerializer
 from rest_framework.response import Response
+from django.conf import settings
+from templated_mail.mail import BaseEmailMessage
 
 
 class JobVoteSerializer(serializers.ModelSerializer):
@@ -62,17 +66,62 @@ class JobPostSerializer(serializers.ModelSerializer):
         return JobPost.objects.create(user=user, **validated_data)
 
 
+def send_application_email(job, user):
+    subject = "New Job Application"
+    body = f"A new job application has been submitted.\nJob Title: {job.title}\nUser Email: {user.email}"
+    from_email = settings.EMAIL_HOST_USER
+
+    acs_users = CustomUser.objects.filter(user_type="acs")
+
+    for acs_user in acs_users:
+        to_email = acs_user.email
+
+    try:
+        # send_mail(subject, message, from_email, [to_email])
+        # message = BaseEmailMessage(
+        #     template_name="emails/jobapplication.html",
+        #     context={"job_title": job.title, "user_email": user.email},
+        # )
+        # message.attach_file(resume_file)
+        # message.send(to_email)
+        email = EmailMessage(subject, body, from_email, [to_email])
+        email.send()
+    except BadHeaderError:
+        pass
+    return
+
+
+def send_application_update_email(job, user, status):
+    subject = f"Job Application Update - {status} - "
+    body = f"Hi, Your Job Application has been {status}.\nJob Title: {job.title}\n Thank You"
+    from_email = settings.EMAIL_HOST_USER
+    acs_users = CustomUser.objects.filter(user_type="acs")
+
+    to_email = user.email
+
+    try:
+        email = EmailMessage(subject, body, from_email, [to_email])
+        email.send()
+    except BadHeaderError:
+        pass
+    return
+
+
 class JobApplicationCreateSerializer(serializers.ModelSerializer):
+    jobpost_id = serializers.ReadOnlyField()
+    user_id = serializers.ReadOnlyField()
+
     class Meta:
         model = JobApplication
-        fields = [
-            "id",
-            "resume",
-        ]
+        fields = ["id", "resume", "jobpost_id", "user_id"]
 
     def create(self, validated_data):
         job_id = self.context["jobpost_id"]
         user_id = self.context["user_id"]
+        job = JobPost.objects.get(id=job_id)
+        user = CustomUser.objects.get(id=user_id)
+
+        send_application_email(job, user)
 
         if JobApplication.objects.filter(job_id=job_id, user_id=user_id).exists():
             raise serializers.ValidationError("Already applied for this Job ")
@@ -98,6 +147,16 @@ class JobApplicationUpdateSerializer(serializers.ModelSerializer):
 
         def update(self, instance, validated_data):
             user_type = self.context["user_type"]
+            job_id = self.context["jobpost_id"]
+            user_id = self.context["user_id"]
+            job = JobPost.objects.get(id=job_id)
+
+            job_application = JobApplication.objects.get(id=validated_data.get("id"))
+
+            user = job_application.user
+            status = validated_data.get["status"]
+            send_application_update_email(job, user, status)
+
             if user_type == "acs" or user_type == "external":
                 instance.date_review = validated_data.get(
                     "date_review", instance.date_review

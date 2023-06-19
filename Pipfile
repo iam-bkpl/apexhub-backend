@@ -25,6 +25,7 @@ pydot = "*"
 django-rest-swagger = "*"
 drf-spectacular = "*"
 drf-yasg = "*"
+django-templated-mail = "*"
 
 [dev-packages]
 

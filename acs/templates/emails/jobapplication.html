@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Job Application</title>
+    <style>
+      /* Add your custom CSS styles here */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      p {
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+
+      .footer {
+        margin-top: 40px;
+        text-align: center;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>New Job Application</h1>
+      <p>Hello ACS User,</p>
+      <p>A new job application has been submitted for the following job:</p>
+      <h2>{{ job_title }}</h2>
+      <p>The applicant's email is: {{ user_email }}</p>
+      <p>Please review the application and take appropriate action.</p>
+      <p>Thank you for using our platform.</p>
+      <div class="footer">
+        <p>
+          If you have any questions, feel free to contact us at
+          <a href="kapil.bhandari@apexcollege.edu.np"
+            >kapil.bhandari@apexcollege.edu.np</a
+          >.
+        </p>
+        <p>&copy; 2023 Apexhub. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>

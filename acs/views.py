@@ -7,6 +7,9 @@ from acs.serializers import (
     JobApplicationUpdateSerializer,
     JobVoteSerializer,
 )
+from django.conf import settings
+from django.core.mail import send_mail
+from core.models import Acs, CustomUser
 from .models import JobPost
 from .serializers import JobPostSerializer
 from django_filters.rest_framework import DjangoFilterBackend
@@ -29,9 +32,6 @@ class JobPostViewSet(ModelViewSet):
 
 
 class JobApplicationViewSet(ModelViewSet):
-    # import pdb
-    # pdb.set_trace()
-
     serializer_class = JobApplicationSerializer
     #  queryset = JobApplication.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -57,7 +57,6 @@ class JobApplicationViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         request_method = self.request.method
-
         if request_method == "POST":
             return JobApplicationCreateSerializer
         elif request_method == "GET":

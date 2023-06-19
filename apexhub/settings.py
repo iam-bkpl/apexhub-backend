@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)wywzecw&u76hp!@#$#xse6i+d*-se&$%arar3+eprk1c*lhz%'
+SECRET_KEY = "django-insecure-)wywzecw&u76hp!@#$#xse6i+d*-se&$%arar3+eprk1c*lhz%"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,75 +33,74 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'drf_yasg',
-    'drf_spectacular',
-    'django_filters',      
-    'corsheaders',
-    'rest_framework',
-    'djoser',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "drf_yasg",
+    "drf_spectacular",
+    "django_filters",
+    "corsheaders",
+    "rest_framework",
+    "djoser",
     "debug_toolbar",
-    'rest_framework_swagger',
-    'acs',
-    'ashop',
-    'core',
-    'django_extensions',
+    "rest_framework_swagger",
+    "acs",
+    "ashop",
+    "core",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'apexhub.urls'
+ROOT_URLCONF = "apexhub.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'apexhub.wsgi.application'
+WSGI_APPLICATION = "apexhub.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
         # 'ENGINE': 'django.db.backends.mysql',
         # 'NAME': 'apexhub',
         # 'USER': 'root',  # Replace with your database username
         # 'PASSWORD': '',  # Replace with your database password
         # 'HOST': 'localhost',  # Replace with your database host address
         # 'PORT': '3306',  # Replace with your database port (default is 3306 for MySQL)
-    }   
-    
+    }
 }
 # DATABASES = {
 #     'default': {
@@ -118,16 +117,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -135,32 +134,31 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
 USE_TZ = True
- 
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = 'core.CustomUser'
-
+AUTH_USER_MODEL = "core.CustomUser"
 
 
 # REST_FRAMEWORK = {
@@ -176,54 +174,57 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     # ],
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' 
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema"
     #  'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     # 'DEFAULT_PERMISSION_CLASSES':[
     #     'rest_framework.permissions.IsAuthenticated',
     # ]
 }
 SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=365)
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=365),
 }
 
 DJOSER = {
-    'PASSWORD_RESET_CONFIRM_URL': 'reset_password/{uid}/{token}',
-
-    'SERIALIZERS' : {
-        'user_create': 'core.serializers.UserCreateSerializer',
-        'current_user': 'core.serializers.UserSerializer',
-    }
+    "PASSWORD_RESET_CONFIRM_URL": "reset_password/{uid}/{token}",
+    "SERIALIZERS": {
+        "user_create": "core.serializers.UserCreateSerializer",
+        "current_user": "core.serializers.UserSerializer",
+    },
 }
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-        'http://localhost:3000',
-
+    "http://localhost:5173",
+    "http://localhost:3000",
 ]
 
-GRAPH_MODELS ={
-'all_applications': True,
-'graph_models': True,
+GRAPH_MODELS = {
+    "all_applications": True,
+    "graph_models": True,
 }
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Apex hub',
-    'DESCRIPTION': 'Apexshop and Apex CS',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
+    "TITLE": "Apex hub",
+    "DESCRIPTION": "Apexshop and Apex CS",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
     # 'SERVE_INCLUDE_SCHEMA': True,
-    'LOGIN_URL' : 'rest_framework:login'
+    "LOGIN_URL": "rest_framework:login"
     # OTHER SETTINGS
 }
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = 'localhost'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = 'cnjckcwblkehckzy'
-EMAIL_PORT = 25
-DEFAULT_FROM_EMAIL = 'i.am.bhandari.kapil@gmail.com'
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = "localhost"
+# EMAIL_HOST_USER = "i.am.bhandari.kapil@gmail.com"
+# EMAIL_HOST_PASSWORD = "cnjckcwblkehckzy"
+# EMAIL_PORT = 25
+# DEFAULT_FROM_EMAIL = "i.am.bhandari.kapil@gmail.com"
+# ADMINS = "admin@admin.com"
+
+EMAIL_HOST = "sandbox.smtp.mailtrap.io"
+EMAIL_HOST_USER = "1022081c335d16"
+EMAIL_HOST_PASSWORD = "c9c30ce4b483e0"
+EMAIL_PORT = "2525"
