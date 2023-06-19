@@ -7,6 +7,7 @@ from core.serializers import CustomUserSerializer, ExternalSerializer, UserSeria
 from rest_framework.response import Response
 from django.conf import settings
 from templated_mail.mail import BaseEmailMessage
+from .send_email import send_application_email
 
 
 class JobVoteSerializer(serializers.ModelSerializer):
@@ -66,29 +67,29 @@ class JobPostSerializer(serializers.ModelSerializer):
         return JobPost.objects.create(user=user, **validated_data)
 
 
-def send_application_email(job, user):
-    subject = "New Job Application"
-    body = f"A new job application has been submitted.\nJob Title: {job.title}\nUser Email: {user.email}"
-    from_email = settings.EMAIL_HOST_USER
+# def send_application_email(job, user):
+#     subject = "New Job Application"
+#     body = f"A new job application has been submitted.\nJob Title: {job.title}\nUser Email: {user.email}"
+#     from_email = settings.EMAIL_HOST_USER
 
-    acs_users = CustomUser.objects.filter(user_type="acs")
+#     acs_users = CustomUser.objects.filter(user_type="acs")
 
-    for acs_user in acs_users:
-        to_email = acs_user.email
+#     for acs_user in acs_users:
+#         to_email = acs_user.email
 
-    try:
-        # send_mail(subject, message, from_email, [to_email])
-        # message = BaseEmailMessage(
-        #     template_name="emails/jobapplication.html",
-        #     context={"job_title": job.title, "user_email": user.email},
-        # )
-        # message.attach_file(resume_file)
-        # message.send(to_email)
-        email = EmailMessage(subject, body, from_email, [to_email])
-        email.send()
-    except BadHeaderError:
-        pass
-    return
+#     try:
+#         # send_mail(subject, message, from_email, [to_email])
+#         # message = BaseEmailMessage(
+#         #     template_name="emails/jobapplication.html",
+#         #     context={"job_title": job.title, "user_email": user.email},
+#         # )
+#         # message.attach_file(resume_file)
+#         # message.send(to_email)
+#         email = EmailMessage(subject, body, from_email, [to_email])
+#         email.send()
+#     except BadHeaderError:
+#         pass
+#     return
 
 
 def send_application_update_email(job, user, status):
@@ -121,7 +122,7 @@ class JobApplicationCreateSerializer(serializers.ModelSerializer):
         job = JobPost.objects.get(id=job_id)
         user = CustomUser.objects.get(id=user_id)
 
-        send_application_email(job, user)
+        send_application_email.delay(job.id, user.id)
 
         if JobApplication.objects.filter(job_id=job_id, user_id=user_id).exists():
             raise serializers.ValidationError("Already applied for this Job ")

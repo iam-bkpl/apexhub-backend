@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
+from celery.schedules import crontab_parser
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -228,3 +229,14 @@ EMAIL_HOST = "sandbox.smtp.mailtrap.io"
 EMAIL_HOST_USER = "1022081c335d16"
 EMAIL_HOST_PASSWORD = "c9c30ce4b483e0"
 EMAIL_PORT = "2525"
+
+
+CELERY_BROKER_URL = "redis://localhost:6379/1"
+CELERY_BEAT_SCHEDULE = {
+    "notify_students": {
+        "task": "core.tasks.notify_students",
+        # "schedule": crontab_parser(min_=1),
+        "schedule": 5,
+        
+    }
+}

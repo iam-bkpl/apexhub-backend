@@ -26,6 +26,9 @@ django-rest-swagger = "*"
 drf-spectacular = "*"
 drf-yasg = "*"
 django-templated-mail = "*"
+redis = "*"
+celery = "*"
+flower = "*"
 
 [dev-packages]
 
