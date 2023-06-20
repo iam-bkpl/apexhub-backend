@@ -1,3 +1,4 @@
+import django.contrib
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
@@ -25,6 +26,7 @@ from core.models import CustomUser
 from django_filters.rest_framework import DjangoFilterBackend
 import rest_framework
 from rest_framework.filters import SearchFilter, OrderingFilter
+from ashop.permissions import IsAdminOrReadOnly
 from .filter import CategoryFilter
 
 
@@ -32,6 +34,7 @@ class CategoryViewSet(ModelViewSet):
     serializer_class = CollectionSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["name"]
+    permission_classes = [IsAdminOrReadOnly]
     # filterset_class = CategoryFilter
     # search_fields = ['name','product_set__name']
 
