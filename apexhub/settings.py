@@ -65,6 +65,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "apexhub.urls"
@@ -237,6 +238,5 @@ CELERY_BEAT_SCHEDULE = {
         "task": "core.tasks.notify_students",
         # "schedule": crontab_parser(min_=1),
         "schedule": 5,
-        
     }
 }
