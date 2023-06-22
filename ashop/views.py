@@ -34,7 +34,7 @@ class CategoryViewSet(ModelViewSet):
     serializer_class = CollectionSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["name"]
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAuthenticated]
     # filterset_class = CategoryFilter
     # search_fields = ['name','product_set__name']
 
@@ -108,7 +108,7 @@ class OrderItemViewSet(ModelViewSet):
         if user.is_admin:
             return OrderItem.objects.all()
 
-        elif user.user_type == "student":
+        elif user.user_type in ["student", "acs"]:
             (student_id, created) = CustomUser.objects.only("id").get_or_create(
                 id=user.id
             )

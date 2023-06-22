@@ -11,6 +11,7 @@ from ashop.models import (
 )
 from core.serializers import CustomUserSerializer
 from core.models import CustomUser
+import rest_framework.mixins
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -109,36 +110,22 @@ class SimpleProductSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     product = SimpleProductSerializer(read_only=True)
     buyer = CustomUserSerializer(read_only=True)
-    # price = serializers.SerializerMethodField()
-    # total_amount = serializers.SerializerMethodField()
-
-    # def get_total_amount(self, order_item):
-    #     product_id = self.context.get('product_id')
-    #     product = Product.objects.get(id=product_id)
-    #     return product.price
-    # def get_price(self, product):
-    #     return product.price
 
     class Meta:
         model = OrderItem
         fields = ["id", "buyer", "product", "date", "payment_status", "paid"]
 
     def create(self, validated_data):
-        buyer_id = self.context["buyer_id"]
-        product_id = self.context["product_id"]
-        return OrderItem.objects.create(
-            buyer_id=buyer_id, product_id=product_id, **validated_data
-        )
+        buyer_id = self.context.get("buyer_id")
+        product_id = self.context.get("product_id")
 
-    # try :
-    #     def create(self, validated_data):
-    #         product_id = self.context['product_id']
-    #         buyer_id = self.context['buyer_id']
-
-    #         return OrderItem.objects.create(buyer_id=buyer_id, product_id=product_id,**validated_data)
-    # except:
-    #     raise ValidationError("Already placed the order")
-    #     # return OrderItem.objects.create(product_id=product_id,buyer_id=buyer_id ,**validated_data)
+        try:
+            order_item = OrderItem.objects.create(
+                buyer_id=buyer_id, product_id=product_id, **validated_data
+            )
+            return order_item
+        except:
+            raise serializers.ValidationError("Order has already placed")
 
 
 # class GetOrderSerializer(serializers.ModelSerializer):

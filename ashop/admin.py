@@ -10,7 +10,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['name','seller','price','stock']
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['id','buyer','product','payment_status']
+    list_display = ['id','buyer','product_id','product','payment_status']
     
 class PaymentAdmin(admin.ModelAdmin):
     list_display = ['buyer','order','date','payment_method','amount']
