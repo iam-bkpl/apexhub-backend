@@ -87,3 +87,19 @@ class AcsViewSet(ModelViewSet):
             serializers.is_valid(raise_exception=True)
             serializers.save()
             return Response(serializers.data)
+
+
+class RatingViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        return RatingSerializer
+
+    def get_queryset(self):
+        return Rating.objects.filter(product_id=self.kwargs["product_pk"])
+
+    def get_serializer_context(self):
+        return {
+            "product_id": self.kwargs["product_pk"],
+            "user_id": self.request.user.id,
+        }

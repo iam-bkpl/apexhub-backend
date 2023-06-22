@@ -7,9 +7,8 @@ from ashop.models import (
     Payment,
     Product,
     ProductImage,
-    Rating,
 )
-from core.serializers import CustomUserSerializer
+from core.serializers import CustomUserSerializer, RatingSerializer
 from core.models import CustomUser
 import rest_framework.mixins
 
@@ -32,19 +31,19 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = ["id", "image"]
 
 
-class RatingSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField(read_only=True)
+# class RatingSerializer(serializers.ModelSerializer):
+#     user_id = serializers.IntegerField(read_only=True)
 
-    class Meta:
-        model = Rating
-        fields = ["id", "rate", "user_id", "date_added"]
+#     class Meta:
+#         model = Rating
+#         fields = ["id", "rate", "user_id", "date_added"]
 
-    def create(self, validated_data):
-        product_id = self.context["product_id"]
-        user_id = self.context["user_id"]
-        return Rating.objects.create(
-            product_id=product_id, user_id=user_id, **validated_data
-        )
+#     def create(self, validated_data):
+#         product_id = self.context["product_id"]
+#         user_id = self.context["user_id"]
+#         return Rating.objects.create(
+#             product_id=product_id, user_id=user_id, **validated_data
+#         )
 
 
 class CommentSerialier(serializers.ModelSerializer):

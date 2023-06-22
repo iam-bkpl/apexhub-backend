@@ -19,7 +19,6 @@ from ashop.models import (
     Payment,
     Product,
     ProductImage,
-    Rating,
 )
 from rest_framework.viewsets import ModelViewSet
 from core.models import CustomUser
@@ -66,20 +65,20 @@ class ProductImageViewSet(ModelViewSet):
         return {"product_id": self.kwargs["product_pk"]}
 
 
-class RatingViewSet(ModelViewSet):
-    permission_classes = [IsAuthenticated]
+# class RatingViewSet(ModelViewSet):
+#     permission_classes = [IsAuthenticated]
 
-    def get_serializer_class(self):
-        return RatingSerializer
+#     def get_serializer_class(self):
+#         return RatingSerializer
 
-    def get_queryset(self):
-        return Rating.objects.filter(product_id=self.kwargs["product_pk"])
+#     def get_queryset(self):
+#         return Rating.objects.filter(product_id=self.kwargs["product_pk"])
 
-    def get_serializer_context(self):
-        return {
-            "product_id": self.kwargs["product_pk"],
-            "user_id": self.request.user.id,
-        }
+#     def get_serializer_context(self):
+#         return {
+#             "product_id": self.kwargs["product_pk"],
+#             "user_id": self.request.user.id,
+#         }
 
 
 class CommentViewSet(ModelViewSet):

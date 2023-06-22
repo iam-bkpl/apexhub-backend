@@ -1,4 +1,4 @@
-from django.urls import path,include
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_nested import routers
 
@@ -14,14 +14,17 @@ router = DefaultRouter()
 # product_router.register(
 #     'images', views.ProductImageViewSet,basename='product-image'
 # )
-router.register('user',views.CustomUserViewSet)
-router.register('students', views.StudentViewSet, basename='students')
-router.register('externals', views.ExternalViewSet)
-router.register('acs', views.AcsViewSet)
+router.register("users", views.CustomUserViewSet)
+router.register("students", views.StudentViewSet, basename="students")
+router.register("externals", views.ExternalViewSet)
+router.register("acs", views.AcsViewSet)
 
+user_router = routers.NestedSimpleRouter(router, "users", lookup="user")
+
+user_router.register("ratings", views.RatingViewSet, basename="user-ratings")
 
 urlpatterns = [
-    path('',include(router.urls)),
+    path("", include(router.urls)),
 ]
 # ] + product_router.urls
 

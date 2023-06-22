@@ -112,16 +112,16 @@ class Payment(models.Model):
 #         return f"{self.order}"
 
 
-class Rating(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="ratings"
-    )
-    rate = models.IntegerField()
-    date_added = models.DateTimeField(auto_now_add=True)
+# class Rating(models.Model):
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     product = models.ForeignKey(
+#         Product, on_delete=models.CASCADE, related_name="ratings"
+#     )
+#     rate = models.IntegerField()
+#     date_added = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"{self.user} rated {self.rate} on {self.product}"
+#     def __str__(self):
+#         return f"{self.user} rated {self.rate} on {self.product}"
 
 
 class Comment(models.Model):
