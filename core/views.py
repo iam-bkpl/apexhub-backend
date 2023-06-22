@@ -97,10 +97,17 @@ class RatingViewSet(ModelViewSet):
         return RatingSerializer
 
     def get_queryset(self):
-        return Rating.objects.filter(user_id=self.kwargs["student_pk"])
+        student_id = self.kwargs["student_pk"]
+        rated_user = Student.objects.get(id=student_id)
+        rated_user_id = rated_user.user.id
+        return Rating.objects.filter(rated_user_id=rated_user_id)
 
     def get_serializer_context(self):
+        student_id = self.kwargs["student_pk"]
+        rated_user = Student.objects.get(id=student_id)
+        rated_user_id = rated_user.user.id
+
         return {
-            "rated_user_id": self.kwargs["student_pk"],
+            "rated_user_id": rated_user_id,
             "rater_id": self.request.user.id,
         }

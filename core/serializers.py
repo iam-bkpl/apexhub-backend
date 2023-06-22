@@ -53,10 +53,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
 class RatingSerializer(serializers.ModelSerializer):
     # user_id = serializers.IntegerField(read_only=True)
+    # rated_user = CustomUserSerializer(read_only=True)
+    # rater = CustomUserSerializer(read_only=True)
+    rated_user = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = Rating
-        fields = ["id", "rate", "rated_user_id", "date_added"]
+        fields = ["id", "rated_user", "rate", "date_added"]
 
     def create(self, validated_data):
         rated_user_id = self.context["rated_user_id"]

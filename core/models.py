@@ -163,4 +163,4 @@ class Rating(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.rater} rated {self.rate} on {self.rated_user}"
+        return f"{self.rater} : rated : ({self.rate}) on user : {self.rated_user}"

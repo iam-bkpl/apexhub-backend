@@ -6,8 +6,8 @@ class CustomUserAdmin(admin.ModelAdmin):
     readonly_fields = ["passwords"]
 
 
-class RatingAdmin(admin.ModelAdmin):
-    list_display = ["rated_user", "rater", "rate", "date_added"]
+# class RatingAdmin(admin.ModelAdmin):
+#     list_display = ["rated_user", "rater", "rate", "date_added"]
 
 
 # Register your models here.
@@ -15,4 +15,4 @@ admin.site.register(Student)
 admin.site.register(CustomUser)
 admin.site.register(External)
 admin.site.register(Acs)
-admin.site.register(Rating, RatingAdmin)
+admin.site.register(Rating)
