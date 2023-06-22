@@ -51,8 +51,24 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = ["id", "username", "contact", "user_type"]
 
 
+class RatingSerializer(serializers.ModelSerializer):
+    # user_id = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Rating
+        fields = ["id", "rate", "rated_user_id", "date_added"]
+
+    def create(self, validated_data):
+        rated_user_id = self.context["rated_user_id"]
+        rater_id = self.context["rater_id"]
+        return Rating.objects.create(
+            rated_user_id=rated_user_id, rater_id=rater_id, **validated_data
+        )
+
+
 class StudentSerializer(serializers.ModelSerializer):
     user = UserSerializer()
+    ratings = RatingSerializer(many=True, read_only=True)
 
     class Meta:
         model = Student
@@ -65,6 +81,8 @@ class StudentSerializer(serializers.ModelSerializer):
             "address",
             "program",
             "enrollment_date",
+            "is_seller",
+            "ratings",
         ]
 
 
@@ -90,18 +108,3 @@ class AcsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Acs
         fields = ["id", "user", "website"]
-
-
-class RatingSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField(read_only=True)
-
-    class Meta:
-        model = Rating
-        fields = ["id", "rate", "user_id", "date_added"]
-
-    def create(self, validated_data):
-        product_id = self.context["product_id"]
-        user_id = self.context["user_id"]
-        return Rating.objects.create(
-            product_id=product_id, user_id=user_id, **validated_data
-        )

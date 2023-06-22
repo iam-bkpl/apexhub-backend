@@ -3,13 +3,14 @@ from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveMo
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
-from core.models import Acs, CustomUser, External, Student
+from core.models import Acs, CustomUser, External, Student, Rating
 from ashop.permissions import IsAdminOrReadOnly
 from .serializers import (
     AcsSerializer,
     ExternalSerializer,
     StudentSerializer,
     CustomUserSerializer,
+    RatingSerializer,
 )
 
 from django.core.mail import send_mail, send_mass_mail, mail_admins, BadHeaderError
@@ -96,10 +97,10 @@ class RatingViewSet(ModelViewSet):
         return RatingSerializer
 
     def get_queryset(self):
-        return Rating.objects.filter(product_id=self.kwargs["product_pk"])
+        return Rating.objects.filter(user_id=self.kwargs["student_pk"])
 
     def get_serializer_context(self):
         return {
-            "product_id": self.kwargs["product_pk"],
-            "user_id": self.request.user.id,
+            "rated_user_id": self.kwargs["student_pk"],
+            "rater_id": self.request.user.id,
         }

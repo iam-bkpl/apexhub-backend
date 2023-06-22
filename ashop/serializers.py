@@ -64,7 +64,6 @@ class CommentSerialier(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
-    ratings = RatingSerializer(many=True, read_only=True)
     comments = CommentSerialier(many=True, read_only=True)
     seller = CustomUserSerializer(read_only=True)
 
@@ -83,7 +82,6 @@ class ProductSerializer(serializers.ModelSerializer):
             "category",
             "qr_code",
             "images",
-            "ratings",
             "comments",
         ]
 

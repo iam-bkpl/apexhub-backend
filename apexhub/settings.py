@@ -40,13 +40,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
     "drf_yasg",
     "drf_spectacular",
     "django_filters",
     "corsheaders",
     "rest_framework",
     "djoser",
-    "debug_toolbar",
     "rest_framework_swagger",
     "acs",
     "ashop",
@@ -55,8 +55,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -65,7 +66,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    # "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "apexhub.urls"
@@ -240,3 +241,11 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": 5,
     }
 }
+
+
+# django debug
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]

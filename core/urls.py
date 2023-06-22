@@ -14,19 +14,19 @@ router = DefaultRouter()
 # product_router.register(
 #     'images', views.ProductImageViewSet,basename='product-image'
 # )
-router.register("users", views.CustomUserViewSet)
+router.register("users", views.CustomUserViewSet, basename="users")
 router.register("students", views.StudentViewSet, basename="students")
 router.register("externals", views.ExternalViewSet)
 router.register("acs", views.AcsViewSet)
 
-user_router = routers.NestedSimpleRouter(router, "users", lookup="user")
+student_router = routers.NestedSimpleRouter(router, "students", lookup="student")
 
-user_router.register("ratings", views.RatingViewSet, basename="user-ratings")
+student_router.register("ratings", views.RatingViewSet, basename="student-ratings")
 
 urlpatterns = [
     path("", include(router.urls)),
-]
-# ] + product_router.urls
+    # ]
+] + student_router.urls
 
 
 # urlpatterns = [

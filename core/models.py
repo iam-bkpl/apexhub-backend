@@ -155,12 +155,12 @@ class External(models.Model):
 
 
 class Rating(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    custom_user = models.ForeignKey(
+    rated_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    rater = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="ratings"
     )
     rate = models.IntegerField()
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user} rated {self.rate} on {self.custom_user}"
+        return f"{self.rater} rated {self.rate} on {self.rated_user}"
