@@ -9,7 +9,7 @@ from .serializers import (
     AcsSerializer,
     ExternalSerializer,
     StudentSerializer,
-    CustomUserSerializer,
+    CustomUserSerializer, 
     RatingSerializer,
 )
 

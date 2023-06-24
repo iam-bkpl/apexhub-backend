@@ -51,6 +51,8 @@ class CustomUser(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     last_login = models.DateTimeField(auto_now=True)
 
+    # meta = models.JSONField()
+
     objects = UserManager()
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

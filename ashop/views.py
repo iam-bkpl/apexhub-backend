@@ -107,7 +107,7 @@ class OrderItemViewSet(ModelViewSet):
         if user.is_admin:
             return OrderItem.objects.all()
 
-        elif user.user_type in ["student", "acs"]:
+        elif user.user_type in ["student"]:
             (student_id, created) = CustomUser.objects.only("id").get_or_create(
                 id=user.id
             )

@@ -193,7 +193,7 @@ SIMPLE_JWT = {
 }
 
 DJOSER = {
-    "PASSWORD_RESET_CONFIRM_URL": "reset_password/{uid}/{token}",
+    "PASSWORD_RES   ET_CONFIRM_URL": "reset_password/{uid}/{token}",
     "SERIALIZERS": {
         "user_create": "core.serializers.UserCreateSerializer",
         "current_user": "core.serializers.UserSerializer",
@@ -204,6 +204,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
 ]
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+]
+# CORS_ALLOW_ALL_ORIGINS = []
 
 GRAPH_MODELS = {
     "all_applications": True,

@@ -7,7 +7,7 @@ from core.serializers import CustomUserSerializer, ExternalSerializer, UserSeria
 from rest_framework.response import Response
 from django.conf import settings
 from templated_mail.mail import BaseEmailMessage
-from .send_email import send_application_email
+from core.send_email import send_application_email
 
 
 class JobVoteSerializer(serializers.ModelSerializer):

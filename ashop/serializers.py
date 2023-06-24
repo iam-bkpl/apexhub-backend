@@ -10,7 +10,8 @@ from ashop.models import (
 )
 from core.serializers import CustomUserSerializer, RatingSerializer
 from core.models import CustomUser
-import rest_framework.mixins
+
+# from core.send_email import send_product_order_email
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -103,6 +104,8 @@ class SimpleProductSerializer(serializers.ModelSerializer):
 #         model = OrderItem
 #         fields = ['id','product','quantity','price']
 
+from django.core.exceptions import ObjectDoesNotExist
+
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product = SimpleProductSerializer(read_only=True)
@@ -117,12 +120,18 @@ class OrderItemSerializer(serializers.ModelSerializer):
         product_id = self.context.get("product_id")
 
         try:
-            order_item = OrderItem.objects.create(
+            # Check if an order already exists for the given product and buyer
+            existing_order = OrderItem.objects.get(
+                product_id=product_id, buyer_id=buyer_id
+            )
+            raise serializers.ValidationError(
+                "Order has already been placed for this product."
+            )
+        except ObjectDoesNotExist:
+            # send_product_order_email(product_id, buyer_id)
+            return OrderItem.objects.create(
                 buyer_id=buyer_id, product_id=product_id, **validated_data
             )
-            return order_item
-        except:
-            raise serializers.ValidationError("Order has already placed")
 
 
 # class GetOrderSerializer(serializers.ModelSerializer):
