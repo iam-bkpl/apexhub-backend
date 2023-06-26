@@ -3,7 +3,7 @@ from djoser.serializers import (
     UserCreateSerializer as BaseUserCreateSerializer,
 )
 from rest_framework import serializers
-from core.models import Acs, CustomUser, External, Student, Rating
+from core.models import CustomUser, Rating
 
 
 class UserCreateSerializer(BaseUserCreateSerializer):
@@ -13,26 +13,26 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         user_type = validated_data.get("user_type")
         user = super().create(validated_data)
 
-        if user_type == CustomUser.USER_TYPE_STUDENT:
-            student_data = {
-                "user": user,
-            }
-            student = Student.objects.create(**student_data)
-            return user
+        # if user_type == CustomUser.USER_TYPE_STUDENT:
+        #     student_data = {
+        #         "user": user,
+        #     }
+        #     student = Student.objects.create(**student_data)
+        #     return user
 
-        elif user_type == CustomUser.USER_TYPE_EXTERNAL:
-            external_data = {
-                "user": user,
-            }
-            external = External.objects.create(**external_data)
-            return user
+        # elif user_type == CustomUser.USER_TYPE_EXTERNAL:
+        #     external_data = {
+        #         "user": user,
+        #     }
+        #     external = External.objects.create(**external_data)
+        #     return user
 
-        elif user_type == CustomUser.USER_TYPE_ACS:
-            acs_data = {
-                "user": user,
-            }
-            acs = Acs.objects.create(**acs_data)
-            return user
+        # elif user_type == CustomUser.USER_TYPE_ACS:
+        #     acs_data = {
+        #         "user": user,
+        #     }
+        #     acs = Acs.objects.create(**acs_data)
+        #     return user
 
         return user
 
@@ -74,7 +74,7 @@ class StudentSerializer(serializers.ModelSerializer):
     ratings = RatingSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Student
+        model = CustomUser
         fields = [
             "id",
             "user",
@@ -93,7 +93,7 @@ class ExternalSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
     class Meta:
-        model = External
+        model = CustomUser
         fields = [
             "id",
             "user",
@@ -109,5 +109,5 @@ class AcsSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
     class Meta:
-        model = Acs
+        model = CustomUser
         fields = ["id", "user", "website"]

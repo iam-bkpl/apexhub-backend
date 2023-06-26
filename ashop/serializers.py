@@ -8,7 +8,7 @@ from ashop.models import (
     Product,
     ProductImage,
 )
-from core.serializers import CustomUserSerializer, RatingSerializer
+from core.serializers import CustomUserSerializer
 from core.models import CustomUser
 
 # from core.send_email import send_product_order_email

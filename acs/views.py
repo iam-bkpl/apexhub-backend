@@ -9,7 +9,7 @@ from acs.serializers import (
 )
 from django.conf import settings
 from django.core.mail import send_mail
-from core.models import Acs, CustomUser
+from core.models import CustomUser
 from .models import JobPost
 from .serializers import JobPostSerializer
 from django_filters.rest_framework import DjangoFilterBackend

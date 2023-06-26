@@ -3,13 +3,13 @@ from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveMo
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
-from core.models import Acs, CustomUser, External, Student, Rating
+from core.models import CustomUser, Rating
 from ashop.permissions import IsAdminOrReadOnly
 from .serializers import (
     AcsSerializer,
     ExternalSerializer,
     StudentSerializer,
-    CustomUserSerializer, 
+    CustomUserSerializer,
     RatingSerializer,
 )
 
@@ -37,12 +37,12 @@ class CustomUserViewSet(ModelViewSet):
 
 class StudentViewSet(ModelViewSet):
     serializer_class = StudentSerializer
-    queryset = Student.objects.all()
+    queryset = CustomUser.objects.all()
     permission_classes = [IsAdminOrReadOnly]
 
     @action(detail=False, methods=["GET", "PUT"], permission_classes=[IsAuthenticated])
     def me(self, request):
-        (student, created) = Student.objects.get_or_create(user_id=request.user.id)
+        (student, created) = CustomUser.objects.get_or_create(user_id=request.user.id)
         if request.method == "GET":
             serializers = StudentSerializer(student)
             return Response(serializers.data)
@@ -54,12 +54,12 @@ class StudentViewSet(ModelViewSet):
 
 
 class ExternalViewSet(ModelViewSet):
-    queryset = External.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = ExternalSerializer
 
     @action(detail=False, methods=["GET", "PUT"])
     def me(self, request):
-        (external, created) = External.objects.get_or_create(user_id=request.user.id)
+        (external, created) = CustomUser.objects.get_or_create(user_id=request.user.id)
 
         if request.method == "GET":
             serializers = ExternalSerializer(external)
@@ -73,12 +73,12 @@ class ExternalViewSet(ModelViewSet):
 
 
 class AcsViewSet(ModelViewSet):
-    queryset = Acs.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = AcsSerializer
 
     @action(detail=False, methods=["GET", "PUT"])
     def me(self, request):
-        (acs, created) = Acs.objects.get_or_create(user_id=request.user.id)
+        (acs, created) = CustomUser.objects.get_or_create(user_id=request.user.id)
 
         if request.method == "GET":
             serializers = AcsSerializer(acs)

@@ -25,7 +25,7 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-class CustomUser(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractBaseUser):
     USER_TYPE_ACS = "acs"
     USER_TYPE_STUDENT = "student"
     USER_TYPE_EXTERNAL = "external"
@@ -34,16 +34,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         (USER_TYPE_STUDENT, "student"),
         (USER_TYPE_ACS, "acs"),
         (USER_TYPE_EXTERNAL, "external"),
-    )
-
-    MALE = "M"
-    FEMALE = "F"
-    OTHER = "O"
-
-    GENDER_CHOICES = (
-        (MALE, "Male"),
-        (FEMALE, "Female"),
-        (OTHER, "Other"),
     )
 
     email = models.EmailField(unique=True)
@@ -55,31 +45,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     avatar = models.ImageField(
         upload_to="avatar", validators=[file_size_validation], null=True, blank=True
     )
-
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     last_login = models.DateTimeField(auto_now=True)
 
-    # Additional fields from the Student model
-    first_name = models.CharField(max_length=255, blank=True, null=True)
-    last_name = models.CharField(max_length=255, blank=True, null=True)
-    gender = models.CharField(max_length=1, blank=True, null=True)
-    address = models.CharField(max_length=255, blank=True, null=True)
-    program = models.CharField(max_length=255, blank=True, null=True)
-    enrollment_date = models.DateTimeField(blank=True, null=True)
-    is_seller = models.BooleanField(default=False)
-
-    # Additional fields from the Acs model
-    website = models.URLField(blank=True)
-
-    # Additional fields from the External model
-    name = models.CharField(max_length=255, blank=True, null=True)
-    address = models.CharField(max_length=255, blank=True, null=True)
-    phone = models.CharField(max_length=20, blank=True, null=True)
-    website = models.URLField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    # meta = models.JSONField()
 
     objects = UserManager()
     USERNAME_FIELD = "email"
@@ -102,12 +74,86 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def has_perms(self, perm, obj=None):
         return self.is_admin
+        # return True
 
     def has_perm(self, perm, obj=None):
         return self.is_admin
+        # return True
 
     def has_module_perms(self, app_label):
         return True
+
+
+class Student(models.Model):
+    MALE = "M"
+    FEMALE = "F"
+    OTHER = "O"
+
+    GENDER_CHOICES = (
+        (MALE, "Male"),
+        (FEMALE, "Female"),
+        (OTHER, "Other"),
+    )
+    PROGRAM_CHOICES = (
+        ("bcis", "Bachelor of Computer Information System"),
+        ("bit", "Bachelor of Tourism"),
+        ("bba", "Bachelor of Business Administration"),
+        ("bba-bi", "Bachelor of Business Administration BI"),
+    )
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_student"
+    )
+    first_name = models.CharField(max_length=255, blank=True, null=True)
+    last_name = models.CharField(max_length=255, blank=True, null=True)
+    gender = models.CharField(
+        max_length=1, choices=GENDER_CHOICES, blank=True, null=True
+    )
+    address = models.CharField(max_length=255, blank=True, null=True)
+    program = models.CharField(
+        max_length=255, choices=PROGRAM_CHOICES, blank=True, null=True
+    )
+    enrollment_date = models.DateTimeField(blank=True, null=True)
+    is_seller = models.BooleanField(default=False)
+
+    # qr_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
+
+    # def save(self, *args, **kwargs):
+    #     if not self.id:
+    #         self.enrollment_date = datetime.now()
+    #     return super().save(*args, **kwargs)
+
+    def __str__(self):
+        # full_name = self.first_name + " " + self.last_name
+        # return full_name
+        return self.user.email
+
+    def get_email_field_name(self):
+        return self.user.email
+
+
+class Acs(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_acs"
+    )
+    website = models.URLField()
+
+    def __str__(self):
+        return self.user.email
+
+
+class External(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_external"
+    )
+    name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=20)
+    website = models.URLField(blank=True)
+    description = models.TextField(blank=True)
+    # created_at = models.DateField()
+
+    def __str__(self):
+        return self.user.email
 
 
 class Rating(models.Model):

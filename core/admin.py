@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import Acs, CustomUser, External, Student, Rating
+from core.models import CustomUser, Rating
 
 
 class CustomUserAdmin(admin.ModelAdmin):
@@ -11,8 +11,8 @@ class CustomUserAdmin(admin.ModelAdmin):
 
 
 # Register your models here.
-admin.site.register(Student)
+# admin.site.register(Student)
 admin.site.register(CustomUser)
-admin.site.register(External)
-admin.site.register(Acs)
+# admin.site.register(External)
+# admin.site.register(Acs)
 admin.site.register(Rating)

@@ -10,7 +10,6 @@ from ashop.serializers import (
     PaymentSerializer,
     ProductImageSerializer,
     ProductSerializer,
-    RatingSerializer,
 )
 from ashop.models import (
     Category,
