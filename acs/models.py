@@ -39,7 +39,7 @@ class JobPost(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     salary = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     date_updated = models.DateTimeField(auto_now=True)
     location = models.CharField(max_length=255, blank=True)

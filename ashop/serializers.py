@@ -67,6 +67,7 @@ class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     comments = CommentSerialier(many=True, read_only=True)
     seller = CustomUserSerializer(read_only=True)
+    category = CollectionSerializer()
 
     class Meta:
         model = Product

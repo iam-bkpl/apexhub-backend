@@ -93,27 +93,27 @@ WSGI_APPLICATION = "apexhub.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-        # 'ENGINE': 'django.db.backends.mysql',
-        # 'NAME': 'apexhub',
-        # 'USER': 'root',  # Replace with your database username
-        # 'PASSWORD': '',  # Replace with your database password
-        # 'HOST': 'localhost',  # Replace with your database host address
-        # 'PORT': '3306',  # Replace with your database port (default is 3306 for MySQL)
-    }
-}
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'apexhub',
-#         'USER': 'iambkpl',
-#         'PASSWORD': 'lipak@123',
-#         'HOST': 'localhost'
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#         # 'ENGINE': 'django.db.backends.mysql',
+#         # 'NAME': 'apexhub',
+#         # 'USER': 'root',  # Replace with your database username
+#         # 'PASSWORD': '',  # Replace with your database password
+#         # 'HOST': 'localhost',  # Replace with your database host address
+#         # 'PORT': '3306',  # Replace with your database port (default is 3306 for MySQL)
 #     }
 # }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "apexhub",
+        "USER": "root",
+        "PASSWORD": "lipak@123",
+        "HOST": "localhost",
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

@@ -29,6 +29,7 @@ django-templated-mail = "*"
 redis = "*"
 celery = "*"
 flower = "*"
+mysqlclient = "*"
 
 [dev-packages]
 pytest = "*"

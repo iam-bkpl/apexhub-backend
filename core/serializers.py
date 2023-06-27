@@ -9,32 +9,32 @@ from core.models import CustomUser, Rating
 class UserCreateSerializer(BaseUserCreateSerializer):
     user_type = serializers.ChoiceField(choices=CustomUser.USER_TYPE_CHOICES)
 
-    def create(self, validated_data):
-        user_type = validated_data.get("user_type")
-        user = super().create(validated_data)
+    # def create(self, validated_data):
+    #     user_type = validated_data.get("user_type")
+    #     user = super().create(validated_data)
 
-        # if user_type == CustomUser.USER_TYPE_STUDENT:
-        #     student_data = {
-        #         "user": user,
-        #     }
-        #     student = Student.objects.create(**student_data)
-        #     return user
+    #     # if user_type == CustomUser.USER_TYPE_STUDENT:
+    #     #     student_data = {
+    #     #         "user": user,
+    #     #     }
+    #     #     student = Student.objects.create(**student_data)
+    #     #     return user
 
-        # elif user_type == CustomUser.USER_TYPE_EXTERNAL:
-        #     external_data = {
-        #         "user": user,
-        #     }
-        #     external = External.objects.create(**external_data)
-        #     return user
+    #     # elif user_type == CustomUser.USER_TYPE_EXTERNAL:
+    #     #     external_data = {
+    #     #         "user": user,
+    #     #     }
+    #     #     external = External.objects.create(**external_data)
+    #     #     return user
 
-        # elif user_type == CustomUser.USER_TYPE_ACS:
-        #     acs_data = {
-        #         "user": user,
-        #     }
-        #     acs = Acs.objects.create(**acs_data)
-        #     return user
+    #     # elif user_type == CustomUser.USER_TYPE_ACS:
+    #     #     acs_data = {
+    #     #         "user": user,
+    #     #     }
+    #     #     acs = Acs.objects.create(**acs_data)
+    #     #     return user
 
-        return user
+    #     return user
 
     class Meta(BaseUserCreateSerializer.Meta):
         fields = ["id", "email", "password", "user_type"]
@@ -70,14 +70,13 @@ class RatingSerializer(serializers.ModelSerializer):
 
 
 class StudentSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    # user = UserSerializer()
     ratings = RatingSerializer(many=True, read_only=True)
 
     class Meta:
         model = CustomUser
         fields = [
             "id",
-            "user",
             "first_name",
             "last_name",
             "gender",
