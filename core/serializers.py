@@ -42,13 +42,13 @@ class UserCreateSerializer(BaseUserCreateSerializer):
 
 class UserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
-        fields = ["id", "email", "password", "user_type"]
+        fields = ["id", "email", "password", "user_type", "first_name"]
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ["id", "username", "contact", "user_type"]
+        fields = ["id", "email", "username", "contact", "user_type"]
 
 
 class RatingSerializer(serializers.ModelSerializer):
@@ -77,6 +77,7 @@ class StudentSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = [
             "id",
+            "avatar",
             "first_name",
             "last_name",
             "gender",
@@ -89,24 +90,29 @@ class StudentSerializer(serializers.ModelSerializer):
 
 
 class ExternalSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-
     class Meta:
         model = CustomUser
         fields = [
             "id",
-            "user",
             "name",
             "address",
-            "phone_number",
+            "phone",
             "website",
             "description",
         ]
 
+    def create(self, validated_data):
+        return CustomUser.objects.create(
+            user_type=CustomUser.USER_TYPE_EXTERNAL, **validated_data
+        )
+
 
 class AcsSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-
     class Meta:
         model = CustomUser
-        fields = ["id", "user", "website"]
+        fields = ["id", "email", "website", "is_authorized_to_external"]
+
+    def create(self, validated_data):
+        return CustomUser.objects.create(
+            user_type=CustomUser.USER_TYPE_ACS, **validated_data
+        )

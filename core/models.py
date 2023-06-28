@@ -46,6 +46,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         (OTHER, "Other"),
     )
 
+    PROGRAM_CHOICES = (
+        ("bcis", "Bachelor of Computer Information System"),
+        ("bit", "Bachelor of Tourism"),
+        ("bba", "Bachelor of Business Administration"),
+        ("bba-bi", "Bachelor of Business Administration BI"),
+    )
+
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=255, blank=True, null=True)
     contact = models.CharField(max_length=255, blank=True, null=True)
@@ -65,10 +72,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     # Additional fields from the Student model
     first_name = models.CharField(max_length=255, blank=True, null=True)
     last_name = models.CharField(max_length=255, blank=True, null=True)
-    gender = models.CharField(max_length=1, blank=True, null=True)
+    gender = models.CharField(
+        max_length=1, blank=True, null=True, choices=GENDER_CHOICES
+    )
     address = models.CharField(max_length=255, blank=True, null=True)
-    program = models.CharField(max_length=255, blank=True, null=True)
-    enrollment_date = models.DateTimeField(blank=True, null=True)
+    program = models.CharField(
+        max_length=255, blank=True, null=True, choices=PROGRAM_CHOICES
+    )
+    enrollment_date = models.DateField(blank=True, null=True)
     is_seller = models.BooleanField(default=False)
 
     # Additional fields from the Acs model
@@ -80,13 +91,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=20, blank=True, null=True)
     website = models.URLField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
+    is_authorized_to_external = models.BooleanField(default=False)
 
     objects = UserManager()
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.email
+        return f"{self.email} - {self.user_type}"
 
     @property
     def is_student(self):
