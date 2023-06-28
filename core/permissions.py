@@ -7,3 +7,15 @@ class AcsPermission(BasePermission):
         if request.method in SAFE_METHODS:
             return True
         return request.user.is_authenticated and request.user.is_acs
+
+
+class ExternalPermission(BasePermission):
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return True
+
+        return (
+            request.user.is_authenticated
+            and request.user.is_acs
+            or request.user.is_external
+        )

@@ -14,7 +14,7 @@ router = DefaultRouter()
 # product_router.register(
 #     'images', views.ProductImageViewSet,basename='product-image'
 # )
-router.register("users", views.CustomUserViewSet, basename="users")
+# router.register("users", views.CustomUserViewSet, basename="users")
 router.register("students", views.StudentViewSet, basename="students")
 router.register("externals", views.ExternalViewSet, basename="externals")
 router.register("acs", views.AcsViewSet, basename="acs")

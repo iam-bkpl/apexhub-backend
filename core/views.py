@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from core.models import CustomUser, Rating
 from ashop.permissions import IsAdminOrReadOnly
-from core.permissions import AcsPermission
+from core.permissions import AcsPermission, ExternalPermission
 from .serializers import (
     AcsSerializer,
     ExternalSerializer,
@@ -182,15 +182,15 @@ class StudentViewSet(ModelViewSet):
 
 class ExternalViewSet(ModelViewSet):
     serializer_class = ExternalSerializer
+    permission_classes = [ExternalPermission]
 
     def get_queryset(self):
         user = self.request.user
 
-        if user.is_acs:
-            return CustomUser.objects.filter(user_type=CustomUser.USER_TYPE_EXTERNAL)
-
-        elif user.is_external:
+        if user.is_external:
             return CustomUser.objects.filter(id=user.id)
+
+        return CustomUser.objects.filter(user_type=CustomUser.USER_TYPE_EXTERNAL)
 
     @action(detail=False, methods=["GET", "PUT"])
     def me(self, request):
