@@ -1,3 +1,4 @@
+import django.db.models
 from djoser.serializers import (
     UserSerializer as BaseUserSerializer,
     UserCreateSerializer as BaseUserCreateSerializer,
@@ -70,14 +71,31 @@ class RatingSerializer(serializers.ModelSerializer):
 
 
 class StudentSerializer(serializers.ModelSerializer):
-    # user = UserSerializer()
-    ratings = RatingSerializer(many=True, read_only=True)
+    rate = serializers.SerializerMethodField()
+
+
+class StudentSerializer(serializers.ModelSerializer):
+    rate = serializers.SerializerMethodField()
+
+    def get_rate(self, student):
+        ratings = student.ratings.all()
+        rate_count = ratings.count()
+        total_rate = sum(rating.rate for rating in ratings)
+
+        if rate_count > 0:
+            average_rate = total_rate / rate_count
+            rounded_rate = round(average_rate, 1)
+            return rounded_rate
+
+        return total_rate
 
     class Meta:
         model = CustomUser
         fields = [
             "id",
             "avatar",
+            "email",
+            "username",
             "first_name",
             "last_name",
             "gender",
@@ -85,7 +103,7 @@ class StudentSerializer(serializers.ModelSerializer):
             "program",
             "enrollment_date",
             "is_seller",
-            "ratings",
+            "rate",
         ]
 
 

@@ -3,7 +3,7 @@ from core.models import CustomUser, Rating
 
 
 class CustomUserAdmin(admin.ModelAdmin):
-    readonly_fields = ["passwords"]
+    list_display = ["id", "email", "username"]
 
 
 # class RatingAdmin(admin.ModelAdmin):
@@ -12,7 +12,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 
 # Register your models here.
 # admin.site.register(Student)
-admin.site.register(CustomUser)
+admin.site.register(CustomUser, CustomUserAdmin)
 # admin.site.register(External)
 # admin.site.register(Acs)
 admin.site.register(Rating)

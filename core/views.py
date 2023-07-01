@@ -155,11 +155,15 @@ class StudentViewSet(ModelViewSet):
     serializer_class = StudentSerializer
     permission_classes = [IsAdminOrReadOnly]
 
+    def get_serializer_context(self):
+        return super().get_serializer_context()
+
     def get_queryset(self):
         user = self.request.user
 
         if user.is_student:
-            return CustomUser.objects.filter(id=user.id)
+            # return CustomUser.objects.filter(id=user.id)
+            return CustomUser.objects.all()
 
         elif user.is_acs:
             return CustomUser.objects.all()
@@ -230,22 +234,15 @@ class AcsViewSet(ModelViewSet):
 
 class RatingViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
-
-    def get_serializer_class(self):
-        return RatingSerializer
+    serializer_class = RatingSerializer
 
     def get_queryset(self):
-        student_id = self.kwargs["student_pk"]
-        rated_user = Student.objects.get(id=student_id)
-        rated_user_id = rated_user.user.id
-        return Rating.objects.filter(rated_user_id=rated_user_id)
+        user_id = self.kwargs["student_pk"]
+        return Rating.objects.filter(rated_user_id=user_id)
 
     def get_serializer_context(self):
         student_id = self.kwargs["student_pk"]
-        rated_user = Student.objects.get(id=student_id)
-        rated_user_id = rated_user.user.id
-
         return {
-            "rated_user_id": rated_user_id,
+            "rated_user_id": student_id,
             "rater_id": self.request.user.id,
         }

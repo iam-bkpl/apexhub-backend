@@ -8,12 +8,29 @@ from datetime import datetime
 from apexhub.settings import AUTH_USER_MODEL
 from django.conf import settings
 from ashop.validators import file_size_validation
+from django.utils.text import slugify
 
 
 class UserManager(BaseUserManager):
+    def generate_username(self, email):
+        username = slugify(email.split("@")[0])
+        new_username = username
+        existing_user = self.filter(username=username).exists()
+        counter = 1
+
+        while existing_user:
+            new_username = f"{username}{counter}"
+            existing_user = self.filter(username=username).exists()
+            counter += 1
+
+        return new_username
+
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError("Email address is required")
+
+        username = self.generate_username(email)
+        extra_fields.setdefault("username", username)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -100,6 +117,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return f"{self.email} - {self.user_type}"
 
+    def save(self, *args, **kwargs):
+        if not self.username:
+            self.username = self.__class__.objects.generate_username(self.email)
+
+        super().save(*args, **kwargs)
+
     @property
     def is_student(self):
         return self.user_type == self.USER_TYPE_STUDENT
@@ -123,9 +146,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Rating(models.Model):
-    rated_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    rater = models.ForeignKey(
+    rated_user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="ratings"
+    )
+    rater = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
     )
     rate = models.IntegerField()
     date_added = models.DateTimeField(auto_now_add=True)
