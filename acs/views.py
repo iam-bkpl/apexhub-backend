@@ -10,6 +10,7 @@ from acs.serializers import (
 from django.conf import settings
 from django.core.mail import send_mail
 from core.models import CustomUser
+from acs.permission import JobPostPermission
 from .models import JobPost
 from .serializers import JobPostSerializer
 from django_filters.rest_framework import DjangoFilterBackend
@@ -24,6 +25,13 @@ class JobPostViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     search_fields = ["company", "title", "description", "experience_level", "location"]
     ordering_fields = ["date_added", "salary", "date_updated", "expire_date"]
+    permission_classes = [JobPostPermission]
+
+    def get_serializer_class(self):
+        return super().get_serializer_class()
+
+    def get_queryset(self):
+        return super().get_queryset()
 
     def get_serializer_context(self):
         user = self.request.user

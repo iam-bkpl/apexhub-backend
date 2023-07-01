@@ -1,4 +1,3 @@
-import django.contrib
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
@@ -24,8 +23,9 @@ from core.models import CustomUser
 from django_filters.rest_framework import DjangoFilterBackend
 import rest_framework
 from rest_framework.filters import SearchFilter, OrderingFilter
-from ashop.permissions import IsAdminOrReadOnly
+from ashop.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .filter import CategoryFilter
+from rest_framework.permissions import SAFE_METHODS
 
 
 class CategoryViewSet(ModelViewSet):
@@ -44,16 +44,23 @@ class CategoryViewSet(ModelViewSet):
 
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.prefetch_related("images").all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     # filterset_fields = ['name', 'seller', 'category']
     search_fields = ["name", "category__name"]
     ordering_fields = ["price", "date_updated", "date_added"]
-    permissions = [IsAuthenticated]
+    permissions = [IsAuthenticated, IsOwnerOrReadOnly]
 
     def get_serializer_context(self):
         return {"request": self.request, "seller_id": self.request.user.id}
+
+    def get_queryset(self):
+        if self.request.method in SAFE_METHODS:
+            return Product.objects.prefetch_related("images").all()
+        return Product.objects.filter(seller_id=self.request.user.id)
+
+    def get_serializer_class(self):
+        return super().get_serializer_class()
 
 
 class ProductImageViewSet(ModelViewSet):
@@ -62,22 +69,6 @@ class ProductImageViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         return {"product_id": self.kwargs["product_pk"]}
-
-
-# class RatingViewSet(ModelViewSet):
-#     permission_classes = [IsAuthenticated]
-
-#     def get_serializer_class(self):
-#         return RatingSerializer
-
-#     def get_queryset(self):
-#         return Rating.objects.filter(product_id=self.kwargs["product_pk"])
-
-#     def get_serializer_context(self):
-#         return {
-#             "product_id": self.kwargs["product_pk"],
-#             "user_id": self.request.user.id,
-#         }
 
 
 class CommentViewSet(ModelViewSet):

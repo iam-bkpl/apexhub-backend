@@ -1,5 +1,7 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
+from django.core.exceptions import ObjectDoesNotExist
+
 from ashop.models import (
     Category,
     Comment,
@@ -67,7 +69,7 @@ class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     comments = CommentSerialier(many=True, read_only=True)
     seller = CustomUserSerializer(read_only=True)
-    category = CollectionSerializer()
+    slug = serializers.ReadOnlyField()
 
     class Meta:
         model = Product
@@ -78,19 +80,17 @@ class ProductSerializer(serializers.ModelSerializer):
             "slug",
             "description",
             "price",
-            "stock",
             "date_added",
             "is_active",
-            "category",
             "qr_code",
             "images",
             "comments",
+            "category",
         ]
 
     def create(self, validated_data):
-        seller_id = self.context["seller_id"]
-
-        return Product.objects.create(seller_id=seller_id, **validated_data)
+        validated_data["seller_id"] = self.context["seller_id"]
+        return super().create(validated_data)
 
 
 class SimpleProductSerializer(serializers.ModelSerializer):
@@ -104,8 +104,6 @@ class SimpleProductSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = OrderItem
 #         fields = ['id','product','quantity','price']
-
-from django.core.exceptions import ObjectDoesNotExist
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -160,10 +158,3 @@ class PaymentSerializer(serializers.ModelSerializer):
         return Payment.objects.create(
             buyer_id=buyer_id, order_id=order_id, **validated_data
         )
-
-
-# class CartSerializer(serializers.ModelSerializer):
-#     # id =  serializers.IntegerField()
-#     class Meta:
-#         model = Cart
-#         fields = ['id','items','total_price']

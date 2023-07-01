@@ -11,7 +11,7 @@ from .models import (
 
 class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
-    list_display = ["name", "seller", "price", "stock"]
+    list_display = ["name", "seller", "price"]
 
 
 class OrderItemAdmin(admin.ModelAdmin):

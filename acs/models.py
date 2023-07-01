@@ -54,6 +54,7 @@ class JobPost(models.Model):
     )
     link = models.URLField(blank=True, null=True)
     expire_date = models.DateTimeField(blank=True, null=True)
+    is_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
