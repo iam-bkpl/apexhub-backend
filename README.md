@@ -53,4 +53,8 @@ For detailed API documentation, please refer to the [Postman API Documentation](
 
 ---
 
-_Note: This README.md file provides an overview of the Apex Hub platform and its modules. For detailed instructions on how to use the platform, please refer to the official documentation._
+## Contact
+
+If you have any questions or suggestions, feel free to reach out to the project maintainers:
+
+- Kapil Bhandari - i.am.bhandari.kapil@gmail.com
