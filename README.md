@@ -47,6 +47,10 @@ Before getting started, ensure you have the following prerequisites installed on
 
 The frontend repository for ApexHub can be found at [iam-bkpl/apexhub-frontend](https://github.com/iam-bkpl/apexhub-frontend).
 
+## API Documentation
+
+For detailed API documentation, please refer to the [Postman API Documentation](https://documenter.getpostman.com/view/26041818/2s93sW9vqL).
+
 ---
 
 _Note: This README.md file provides an overview of the Apex Hub platform and its modules. For detailed instructions on how to use the platform, please refer to the official documentation._
