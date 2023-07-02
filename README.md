@@ -23,3 +23,20 @@ Before getting started, ensure you have the following prerequisites installed on
    ```shell
    cd apexhub-backend
    ```
+
+3. Install pipenv file
+
+   ```shell
+   pipenv install
+   ```
+
+4. Activate the virtual environment
+
+   ```shell
+   pipenv install
+   ```
+
+5. Run the server
+   ```shell
+   python manage.py runserver
+   ```
