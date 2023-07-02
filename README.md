@@ -40,3 +40,13 @@ Before getting started, ensure you have the following prerequisites installed on
    ```shell
    python manage.py runserver
    ```
+
+**"Connecting Students, Empowering Dreams: ApexHub."**
+
+## Frontend Repository
+
+The frontend repository for ApexHub can be found at [iam-bkpl/apexhub-frontend](https://github.com/iam-bkpl/apexhub-frontend).
+
+---
+
+_Note: This README.md file provides an overview of the Apex Hub platform and its modules. For detailed instructions on how to use the platform, please refer to the official documentation._
