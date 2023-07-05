@@ -40,7 +40,7 @@ class JobPost(models.Model):
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=False)
-    salary = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    salary = models.CharField(max_length=20, blank=True, null=True)
     date_updated = models.DateTimeField(auto_now=True)
     location = models.CharField(max_length=255, blank=True)
     job_type = models.CharField(
@@ -55,6 +55,13 @@ class JobPost(models.Model):
     link = models.URLField(blank=True, null=True)
     expire_date = models.DateTimeField(blank=True, null=True)
     is_verified = models.BooleanField(default=False)
+
+    def set_expiry_date(self, date_str):
+        # Convert the date string to a datetime object using the desired format
+        expiry_datetime = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+
+        # Assign the expiry date to the model field
+        self.expire_date = expiry_datetime
 
     def __str__(self):
         return self.title

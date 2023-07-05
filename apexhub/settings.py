@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "debug_toolbar",
-    "drf_yasg",
     "drf_spectacular",
     "django_filters",
     "corsheaders",
@@ -52,6 +51,7 @@ INSTALLED_APPS = [
     "ashop",
     "core",
     "django_extensions",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -179,8 +179,8 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
-    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
-    #  'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    # "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    # "DEFAULT_SCHEMA_CLASS": "drf_yasg.openapi.SwaggerAutoSchema",
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
@@ -192,21 +192,27 @@ SIMPLE_JWT = {
 
 DJOSER = {
     "LOGIN_FIELD": "email",
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    "SEND_CONFIRMATION_EMAIL": True,
+    "SET_USERNAME_RETYPE": True,
+    "SET_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
-    "USERNAME_RESET_CONFIRM_URL": "username/reset/confirm/{uid}/{token}",
-    # "USER_CREATE_PASSWORD_RETYPE": True,
-    # "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
-    # "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
-    # "SEND_CONFIRMATION_EMAIL": True,
-    # "PASSWORD_RESET_CONFIRM_RETYPE": True,
-    # "SET_USERNAME_RETYPE": True,
-    # "SET_PASSWORD_RETYPE": True,
-    "LOGOUT_ON_PASSWORD_CHANGE": True,
-    "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
+    # "PASSWORD_RESET_CONFIRM_URL": "/http://localhost:5173/password/reset/confirm/{uid}/{token}",
+    # "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",
+    "ACTIVATION_URL": "activate/{uid}/{token}",
+    "SEND_ACTIVATION_EMAIL": True,
+    # "SERIALIZERS": {
+    #     "user_create": "core.serializers.UserCreateSerializer",
+    #     "current_user": "core.serializers.UserSerializer",
+    #     # "user": "core.serializers.CustomUserSerializer",
+    # },
     "SERIALIZERS": {
         "user_create": "core.serializers.UserCreateSerializer",
-        "current_user": "core.serializers.UserSerializer",
-        # "user": "core.serializers.CustomUserSerializer",
+        "user": "core.serializers.CustomUserSerializer",
+        "current_user": "core.serializers.UserCreateSerializer",
+        "user_delete": "djoser.serializers.UserDeleteSerializer",
     },
 }
 
@@ -232,6 +238,10 @@ SPECTACULAR_SETTINGS = {
     # 'SERVE_INCLUDE_SCHEMA': True,
     "LOGIN_URL": "rest_framework:login"
     # OTHER SETTINGS
+}
+
+SWAGGER_SETTINGS = {
+    "VALIDATOR_URL": "http://localhost:8189",
 }
 
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -264,3 +274,4 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+FRONTEND_BASE_URL = "http://localhost:5173"
