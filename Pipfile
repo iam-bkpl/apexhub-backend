@@ -30,6 +30,7 @@ redis = "*"
 celery = "*"
 flower = "*"
 mysqlclient = "*"
+django-ckeditor = "*"
 
 [dev-packages]
 pytest = "*"

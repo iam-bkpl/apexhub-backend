@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "core",
     "django_extensions",
     "drf_yasg",
+    "ckeditor",
 ]
 
 MIDDLEWARE = [
@@ -283,3 +284,15 @@ INTERNAL_IPS = [
     # ...
 ]
 FRONTEND_BASE_URL = "http://localhost:5173"
+
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_JQUERY_URL = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"
+CKEDITOR_CONFIGS = {
+    "default": {
+        "toolbar": "full",
+        "height": 300,
+        "width": 900,
+    },
+}

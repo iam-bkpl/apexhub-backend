@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 from apexhub.settings import AUTH_USER_MODEL, MEDIA_ROOT
+from ckeditor.fields import RichTextField
+
 
 # from core.models import Acs, External
 from ashop.validators import file_size_validation
@@ -38,6 +40,7 @@ class JobPost(models.Model):
     # company = models.ForeignKey(External,on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
+    text = RichTextField(blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=False)
     salary = models.CharField(max_length=20, blank=True, null=True)

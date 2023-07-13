@@ -35,6 +35,7 @@ urlpatterns = [
     path("api/auth/", include("djoser.urls")),
     path("api/auth/", include("djoser.urls.jwt")),
     path("__debug__/", include("debug_toolbar.urls")),
+    path("ckeditor/", include("ckeditor_uploader.urls")),
     # swagger
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
@@ -48,6 +49,7 @@ urlpatterns = [
 ]
 # urlpatterns += (re_path(r"^.*$", TemplateView.as_view(template_name="index.html")),)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

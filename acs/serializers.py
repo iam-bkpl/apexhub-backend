@@ -50,6 +50,7 @@ class JobPostSerializer(serializers.ModelSerializer):
             "title",
             "company",
             "vacancy",
+            "text",
             "description",
             "date_added",
             "is_active",
