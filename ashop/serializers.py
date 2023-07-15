@@ -16,7 +16,7 @@ from core.models import CustomUser
 # from core.send_email import send_product_order_email
 
 
-class CollectionSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ["id", "name", "products_count"]
@@ -70,6 +70,7 @@ class ProductSerializer(serializers.ModelSerializer):
     comments = CommentSerialier(many=True, read_only=True)
     seller = CustomUserSerializer(read_only=True)
     slug = serializers.ReadOnlyField()
+    category = CategorySerializer(read_only=True)
 
     class Meta:
         model = Product

@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
 from django.db.models.aggregates import Count
 from ashop.serializers import (
-    CollectionSerializer,
+    CategorySerializer,
     CommentSerialier,
     OrderItemSerializer,
     PaymentSerializer,
@@ -29,7 +29,6 @@ from rest_framework.permissions import SAFE_METHODS
 
 
 class CategoryViewSet(ModelViewSet):
-    serializer_class = CollectionSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["name"]
     permission_classes = [IsAuthenticated]
@@ -40,7 +39,7 @@ class CategoryViewSet(ModelViewSet):
         return Category.objects.annotate(products_count=Count("products")).all()
 
     def get_serializer_class(self):
-        return CollectionSerializer
+        return CategorySerializer
 
 
 class ProductViewSet(ModelViewSet):
