@@ -58,6 +58,9 @@ class ProductImage(models.Model):
         upload_to="product/images", validators=[file_size_validation]
     )
 
+    def __str__(self):
+        return self.product.name
+
 
 class OrderItem(models.Model):
     PAYMENT_STATUS_PENDING = "P"
