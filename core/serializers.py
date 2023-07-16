@@ -5,6 +5,7 @@ from djoser.serializers import (
 )
 from rest_framework import serializers
 from core.models import CustomUser, Rating
+from core.models import Contact
 
 
 class UserCreateSerializer(BaseUserCreateSerializer):
@@ -134,3 +135,15 @@ class AcsSerializer(serializers.ModelSerializer):
         return CustomUser.objects.create(
             user_type=CustomUser.USER_TYPE_ACS, **validated_data
         )
+
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = [
+            "id",
+            "name",
+            "email",
+            "subject",
+            "message",
+        ]

@@ -70,7 +70,8 @@ class ProductSerializer(serializers.ModelSerializer):
     comments = CommentSerialier(many=True, read_only=True)
     seller = CustomUserSerializer(read_only=True)
     slug = serializers.ReadOnlyField()
-    category = CategorySerializer(read_only=True)
+    # category = CategorySerializer(read_only=True)
+    qr_code = serializers.FileField(required=False)
 
     class Meta:
         model = Product

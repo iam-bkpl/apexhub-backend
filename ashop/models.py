@@ -30,7 +30,7 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     date_update = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(
-        Category, on_delete=models.PROTECT, related_name="products"
+        Category, on_delete=models.PROTECT, related_name="products", default="1"
     )
     qr_code = models.ImageField(upload_to="qrcodes/", blank=True, null=True)
 

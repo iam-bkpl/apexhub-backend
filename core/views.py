@@ -4,7 +4,7 @@ from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, RetrieveMo
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
-from core.models import CustomUser, Rating
+from core.models import CustomUser, Rating, Contact
 from ashop.permissions import IsAdminOrReadOnly
 from core.permissions import AcsPermission, ExternalPermission
 from .serializers import (
@@ -13,6 +13,7 @@ from .serializers import (
     StudentSerializer,
     CustomUserSerializer,
     RatingSerializer,
+    ContactSerializer,
 )
 
 from djoser.views import UserViewSet
@@ -246,3 +247,11 @@ class RatingViewSet(ModelViewSet):
             "rated_user_id": student_id,
             "rater_id": self.request.user.id,
         }
+
+
+class ContactViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ContactSerializer
+
+    def get_queryset(self):
+        return Contact.objects.all()
