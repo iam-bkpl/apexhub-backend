@@ -6,7 +6,6 @@ from .models import (
     Product,
     ProductImage,
     Payment,
-    FeaturedProduct,
 )
 
 
@@ -28,7 +27,6 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductImage)
 admin.site.register(OrderItem, OrderItemAdmin)
 admin.site.register(Payment, PaymentAdmin)
-admin.site.register(FeaturedProduct)
 # admin.site.register(Rating)
 admin.site.register(Comment)
 # admin.site.register(Cart)
