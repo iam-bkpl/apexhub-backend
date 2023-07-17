@@ -2,6 +2,7 @@ from django.core.mail import send_mail, BadHeaderError, send_mass_mail, EmailMes
 from django.db.models import Count
 from rest_framework import serializers
 from core.models import CustomUser
+import rest_framework.filters
 from .models import JobApplication, JobPost, JobVote
 from core.serializers import CustomUserSerializer, ExternalSerializer, UserSerializer
 from rest_framework.response import Response
@@ -11,12 +12,14 @@ from core.send_email import send_application_email
 
 
 class JobVoteSerializer(serializers.ModelSerializer):
+    # user = serializers.ReadOnlyField()
+
     class Meta:
         model = JobVote
-        fields = ["id", "user", "jobpost"]
+        fields = ["id", "jobpost"]
 
     def validate(self, attrs):
-        user = attrs["user"]
+        user = self.context["user_id"]
         jobpost = attrs["jobpost"]
         print("validate function ")
 
@@ -27,11 +30,13 @@ class JobVoteSerializer(serializers.ModelSerializer):
             print("job voote does not exist")
             return attrs
 
-    # def create(self, validated_data):
-    #   user_id = self.context['user_id']
-    #   jobpost_id = self.context['jobpost_id']
+    def create(self, validated_data):
+        user_id = self.context["user_id"]
+        jobpost_id = self.context["jobpost_id"]
 
-    #   return JobVote.objects.create(user_id=user_id,jobpost_id=jobpost_id,**validated_data)
+        return JobVote.objects.create(
+            user_id=user_id, jobpost_id=jobpost_id, **validated_data
+        )
 
 
 class JobPostSerializer(serializers.ModelSerializer):
