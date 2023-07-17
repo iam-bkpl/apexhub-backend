@@ -12,6 +12,7 @@ from ashop.models import (
 )
 from core.serializers import CustomUserSerializer
 from core.models import CustomUser
+from .models import FeaturedProduct
 
 # from core.send_email import send_product_order_email
 
@@ -32,6 +33,12 @@ class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
         fields = ["id", "image"]
+
+
+class FeaturedProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeaturedProduct
+        fields = ["id", "name", "product_id"]
 
 
 # class RatingSerializer(serializers.ModelSerializer):
@@ -88,6 +95,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "images",
             "comments",
             "category",
+            "is_featured",
         ]
 
     def create(self, validated_data):

@@ -1,3 +1,4 @@
+import ashop.models
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
@@ -32,6 +33,7 @@ class Product(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.PROTECT, related_name="products", default="1"
     )
+    is_featured = models.BooleanField(default=False)
     qr_code = models.ImageField(upload_to="qrcodes/", blank=True, null=True)
 
     def __str__(self):
@@ -50,6 +52,17 @@ class Product(models.Model):
                 slug = f"{base_slug}-{timestamp_slug}-{counter}"
             self.slug = slug
         super().save(*args, **kwargs)
+
+
+class FeaturedProduct(models.Model):
+    name = models.CharField(max_length=255)
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return self.name
 
 
 class ProductImage(models.Model):

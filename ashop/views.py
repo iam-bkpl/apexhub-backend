@@ -9,6 +9,7 @@ from ashop.serializers import (
     PaymentSerializer,
     ProductImageSerializer,
     ProductSerializer,
+    FeaturedProductSerializer,
 )
 from ashop.models import (
     Category,
@@ -17,6 +18,7 @@ from ashop.models import (
     Payment,
     Product,
     ProductImage,
+    FeaturedProduct,
 )
 from rest_framework.viewsets import ModelViewSet
 from core.models import CustomUser
@@ -68,6 +70,13 @@ class ProductImageViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         return {"product_id": self.kwargs["product_pk"]}
+
+
+class FeaturedProductViewSet(ModelViewSet):
+    serializer_class = FeaturedProductSerializer
+
+    def get_queryset(self):
+        return FeaturedProduct.objects.all()
 
 
 class CommentViewSet(ModelViewSet):
