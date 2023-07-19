@@ -89,10 +89,15 @@ class JobVoteSerializer(serializers.ModelSerializer):
 
         if JobVote.objects.filter(user_id=user_id, jobpost_id=jobpost_id).exists():
             # If the vote exists, delete it
-            JobVote.objects.filter(user_id=user_id, jobpost_id=jobpost_id).delete()
+            # JobVote.objects.filter(user_id=user_id, jobpost_id=jobpost_id).delete()
+            self.delete_vote(user_id, jobpost_id)
             raise serializers.ValidationError({"detail": "Job vote deleted."})
         else:
             return attrs
+
+    def delete_vote(self, user_id, jobpost_id):
+        # Helper method to delete the vote
+        JobVote.objects.filter(user_id=user_id, jobpost_id=jobpost_id).delete()
 
 
 class JobPostSerializer(serializers.ModelSerializer):
