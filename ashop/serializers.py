@@ -73,6 +73,7 @@ class ProductSerializer(serializers.ModelSerializer):
     slug = serializers.ReadOnlyField()
     # category = CategorySerializer(read_only=True)
     qr_code = serializers.FileField(required=False)
+    category = serializers.ReadOnlyField(source="category.name")
 
     class Meta:
         model = Product
