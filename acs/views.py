@@ -25,6 +25,7 @@ class JobPostViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     search_fields = ["company", "title", "description", "experience_level", "location"]
     ordering_fields = ["date_added", "salary", "date_updated", "expire_date"]
+
     permission_classes = [JobPostPermission]
 
     def get_serializer_class(self):
