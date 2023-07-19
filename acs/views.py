@@ -54,7 +54,7 @@ class JobApplicationViewSet(ModelViewSet):
         job_id = self.kwargs["jobpost_pk"]
         if user.is_staff or user.user_type in ["acs", "external"]:
             # return JobApplication.objects.filter(job_id=job_id)
-            return JobApplication.objects.all()
+            return JobApplication.objects.filter(job_id=job_id)
         return JobApplication.objects.filter(user=user, job_id=job_id)
 
     def get_serializer_context(self):
@@ -84,20 +84,6 @@ class JobApplicationViewSet(ModelViewSet):
                 {"detail": "You are not authorized to update this job application."},
                 status=status.HTTP_403_FORBIDDEN,
             )
-
-
-# class JobVoteViewSet(ModelViewSet):
-#     serializer_class = JobVoteSerializer
-#     queryset = JobVote.objects.all()
-
-#     def get_serializer_context(self):
-#         return {
-#             "job_id": self.kwargs["jobpost_pk"],
-#             "user_id": self.request.user.id,  # type: ignore
-#         }
-
-#     def get_queryset(self):
-#         return JobVote.objects.filter(jobpost=self.kwargs["jobpost_pk"])
 
 
 class JobVoteViewSet(ModelViewSet):

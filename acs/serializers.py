@@ -19,21 +19,6 @@ class JobVoteSerializer(serializers.ModelSerializer):
         model = JobVote
         fields = ["id", "jobpost"]
 
-    # def validate(self, attrs):
-    #     user = self.context["user_id"]
-    #     jobpost = attrs["jobpost"]
-    #     print("validate function ")
-
-    #     if JobVote.objects.filter(user=user, jobpost=jobpost).exists():
-    #         JobVote.objects.filter(user=user, jobpost=jobpost).delete()
-
-    #         # raise serializers.ValidationError({"detail": "job vote deleted"})
-    #         # return {"detail": "Job vote deleted."}
-
-    #     else:
-    #         print("job voote does not exist")
-    #         return attrs
-
     def create(self, validated_data):
         user_id = self.context["user_id"]
         jobpost_id = self.context["job_id"]
@@ -58,9 +43,13 @@ class JobPostSerializer(serializers.ModelSerializer):
     # user = serializers.ReadOnlyField()
 
     vote_count = serializers.SerializerMethodField()
+    application_count = serializers.SerializerMethodField()
 
     def get_vote_count(self, job_post):
         return job_post.jobvote_set.count()
+
+    def get_application_count(self, job_post):
+        return job_post.jobapplication_set.count()
 
     class Meta:
         model = JobPost
@@ -80,6 +69,7 @@ class JobPostSerializer(serializers.ModelSerializer):
             "link",
             "expire_date",
             "vote_count",
+            "application_count",
         ]
 
     def create(self, validated_data):
@@ -142,7 +132,7 @@ class JobApplicationCreateSerializer(serializers.ModelSerializer):
         job = JobPost.objects.get(id=job_id)
         user = CustomUser.objects.get(id=user_id)
 
-        send_application_email.delay(job.id, user.id)
+        # send_application_email.delay(job.id, user.id)
 
         if JobApplication.objects.filter(job_id=job_id, user_id=user_id).exists():
             raise serializers.ValidationError("Already applied for this Job ")
