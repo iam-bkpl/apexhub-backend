@@ -92,7 +92,7 @@ class JobVoteViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         return {
-            "jobpost_id": self.kwargs["jobpost_pk"],
+            "job_id": self.kwargs["jobpost_pk"],
             "user_id": self.request.user.id,  # type: ignore
         }
 
