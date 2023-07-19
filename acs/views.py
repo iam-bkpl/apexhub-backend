@@ -16,7 +16,7 @@ from .serializers import JobPostSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
-from rest_framework import status
+import rest_framework
 
 
 class JobPostViewSet(ModelViewSet):
@@ -86,15 +86,29 @@ class JobApplicationViewSet(ModelViewSet):
             )
 
 
+# class JobVoteViewSet(ModelViewSet):
+#     serializer_class = JobVoteSerializer
+#     queryset = JobVote.objects.all()
+
+#     def get_serializer_context(self):
+#         return {
+#             "job_id": self.kwargs["jobpost_pk"],
+#             "user_id": self.request.user.id,  # type: ignore
+#         }
+
+#     def get_queryset(self):
+#         return JobVote.objects.filter(jobpost=self.kwargs["jobpost_pk"])
+
+
 class JobVoteViewSet(ModelViewSet):
     serializer_class = JobVoteSerializer
     queryset = JobVote.objects.all()
 
     def get_serializer_context(self):
-        return {
-            "job_id": self.kwargs["jobpost_pk"],
-            "user_id": self.request.user.id,  # type: ignore
-        }
+        context = super().get_serializer_context()
+        context["job_id"] = self.kwargs["jobpost_pk"]
+        context["user_id"] = self.request.user.id
+        return context
 
     def get_queryset(self):
-        return JobVote.objects.filter(jobpost=self.kwargs["jobpost_pk"])
+        return JobVote.objects.filter(jobpost_id=self.kwargs["jobpost_pk"])

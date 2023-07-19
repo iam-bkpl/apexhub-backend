@@ -74,9 +74,6 @@ class JobVote(models.Model):
     jobpost = models.ForeignKey(JobPost, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-    # class Meta:
-    #     unique_together = ('jobpost','user')
-
 
 class JobApplication(models.Model):
     APPLICATION_STATUS_PENDING = "pending"

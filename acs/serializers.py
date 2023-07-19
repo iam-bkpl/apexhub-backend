@@ -1,3 +1,4 @@
+import django.core.exceptions
 from django.core.mail import send_mail, BadHeaderError, send_mass_mail, EmailMessage
 from django.db.models import Count
 from rest_framework import serializers
@@ -11,32 +12,87 @@ from templated_mail.mail import BaseEmailMessage
 from core.send_email import send_application_email
 
 
-class JobVoteSerializer(serializers.ModelSerializer):
-    # user = serializers.ReadOnlyField()
+# class JobVoteSerializer(serializers.ModelSerializer):
+#     # user = serializers.ReadOnlyField()
 
+#     class Meta:
+#         model = JobVote
+#         fields = ["id", "jobpost"]
+
+#     # def validate(self, attrs):
+#     #     user = self.context["user_id"]
+#     #     jobpost = attrs["jobpost"]
+#     #     print("validate function ")
+
+#     #     if JobVote.objects.filter(user=user, jobpost=jobpost).exists():
+#     #         JobVote.objects.filter(user=user, jobpost=jobpost).delete()
+
+#     #         # raise serializers.ValidationError({"detail": "job vote deleted"})
+#     #         # return {"detail": "Job vote deleted."}
+
+#     #     else:
+#     #         print("job voote does not exist")
+#     #         return attrs
+
+#     def create(self, validated_data):
+#         user_id = self.context["user_id"]
+#         jobpost_id = self.context["job_id"]
+
+#         # return JobVote.objects.create(
+#         #     user_id=user_id, jobpost_id=jobpost_id, **validated_data
+#         # )
+#         # Check if the user has already voted for the jobpost
+#         if JobVote.objects.filter(user=user_id, jobpost=jobpost_id).exists():
+#             # If the vote exists, delete it
+#             JobVote.objects.filter(user=user_id, jobpost_id=jobpost_id).delete()
+#             return {"detail": "Job vote deleted."}  # Return success message
+
+#         validated_data["user_id"] = user_id
+#         validated_data["jobpost_id"] = jobpost_id
+#         # If the vote does not exist, create a new JobVote instance
+#         # return JobVote.objects.create(
+#         #     user_id=user_id, jobpost_id=jobpost_id, **validated_data
+#         # )
+
+#         return super().create(validated_data)
+
+
+class JobVoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobVote
         fields = ["id", "jobpost"]
 
-    def validate(self, attrs):
-        user = self.context["user_id"]
-        jobpost = attrs["jobpost"]
-        print("validate function ")
-
-        if JobVote.objects.filter(user=user, jobpost=jobpost).exists():
-            JobVote.objects.filter(user=user, jobpost=jobpost).delete()
-            raise serializers.ValidationError({"detail": "job vote deleted"})
-        else:
-            print("job voote does not exist")
-            return attrs
-
     def create(self, validated_data):
+        user_id = self.context["user_id"]
+        jobpost_id = self.context["job_id"]  # Use "jobpost_id" here
+
+        # Check if the user has already voted for the jobpost
+        try:
+            jobpost = JobPost.objects.get(id=jobpost_id)
+        except JobPost.DoesNotExist:
+            raise serializers.ValidationError("Invalid JobPost ID")
+
+        # If the user has already voted, delete the vote and return success message
+        if JobVote.objects.filter(user_id=user_id, jobpost_id=jobpost_id).exists():
+            JobVote.objects.filter(user_id=user_id, jobpost_id=jobpost_id).delete()
+            # return {"detail": "Job vote deleted."}
+            return {"detail": "Job vote deleted."}
+        # If the vote does not exist, create a new JobVote instance
+        validated_data["user_id"] = user_id
+        validated_data["jobpost_id"] = jobpost_id
+
+        return super().create(validated_data)
+
+    def validate(self, attrs):
         user_id = self.context["user_id"]
         jobpost_id = self.context["job_id"]
 
-        return JobVote.objects.create(
-            user_id=user_id, jobpost_id=jobpost_id, **validated_data
-        )
+        if JobVote.objects.filter(user_id=user_id, jobpost_id=jobpost_id).exists():
+            # If the vote exists, delete it
+            JobVote.objects.filter(user_id=user_id, jobpost_id=jobpost_id).delete()
+            raise serializers.ValidationError({"detail": "Job vote deleted."})
+        else:
+            return attrs
 
 
 class JobPostSerializer(serializers.ModelSerializer):
