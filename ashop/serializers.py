@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+import django.core.mail
 from rest_framework import serializers
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -51,11 +52,23 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 
 class CommentSerialier(serializers.ModelSerializer):
-    user_id = serializers.IntegerField(read_only=True)
+    # user_id = serializers.IntegerField(read_only=True)
+    # user_name = serializers.SerializerMethodField()
+    user = CustomUserSerializer()
+
+    # def get_user(self, obj):
+    #     user_id = obj.id
+    #     return CustomUser.objects.filter(id=user_id)
+
+    # def get_user_name(self, obj):
+    #     username = obj.user.username
+    #     if username:
+    #         return username
+    #     return obj.user.email
 
     class Meta:
         model = Comment
-        fields = ["id", "user_id", "text", "date_added"]
+        fields = ["id", "user", "text", "date_added"]
 
     def create(self, validated_data):
         user_id = self.context["user_id"]
