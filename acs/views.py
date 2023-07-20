@@ -21,7 +21,7 @@ import rest_framework
 
 class JobPostViewSet(ModelViewSet):
     serializer_class = JobPostSerializer
-    queryset = JobPost.objects.all()
+    # queryset = JobPost.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     search_fields = ["company", "title", "description", "experience_level", "location"]
     ordering_fields = ["date_added", "salary", "date_updated", "expire_date"]
@@ -32,7 +32,12 @@ class JobPostViewSet(ModelViewSet):
         return super().get_serializer_class()
 
     def get_queryset(self):
-        return super().get_queryset()
+        user = self.request.user
+        if user.is_staff or user.is_acs or user.is_superuser or user.is_admin:
+            return JobPost.objects.all()
+        if user.is_external:
+            return JobPost.objects.filter(user=user)
+        return JobPost.objects.filter(is_active=True)
 
     def get_serializer_context(self):
         user = self.request.user

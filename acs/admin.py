@@ -6,6 +6,10 @@ class JobVoteAdmin(admin.ModelAdmin):
     list_display = ["id", "jobpost"]
 
 
-admin.site.register(JobPost)
+class JobAdmin(admin.ModelAdmin):
+    list_display = ["id", "title", "user"]
+
+
+admin.site.register(JobPost, JobAdmin)
 admin.site.register(JobApplication)
 admin.site.register(JobVote, JobVoteAdmin)
