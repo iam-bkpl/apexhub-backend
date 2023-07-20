@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 import django.core.mail
+import django.views.generic
 from rest_framework import serializers
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -144,7 +145,7 @@ class SimpleProductSerializer(serializers.ModelSerializer):
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    product = SimpleProductSerializer(read_only=True)
+    product = ProductSerializer(read_only=True)
     buyer = CustomUserSerializer(read_only=True)
 
     class Meta:
@@ -156,15 +157,12 @@ class OrderItemSerializer(serializers.ModelSerializer):
         product_id = self.context.get("product_id")
 
         try:
-            # Check if an order already exists for the given product and buyer
-            existing_order = OrderItem.objects.get(
-                product_id=product_id, buyer_id=buyer_id
-            )
-            raise serializers.ValidationError(
-                "Order has already been placed for this product."
-            )
+            # existing_order = OrderItem.objects.get(
+            #     product_id=product_id, buyer_id=buyer_id
+            # )
+            existing_order = OrderItem.objects.get(product_id=product_id)
+            return existing_order
         except ObjectDoesNotExist:
-            # send_product_order_email(product_id, buyer_id)
             return OrderItem.objects.create(
                 buyer_id=buyer_id, product_id=product_id, **validated_data
             )
