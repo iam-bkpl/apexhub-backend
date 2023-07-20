@@ -54,7 +54,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 class CommentSerialier(serializers.ModelSerializer):
     # user_id = serializers.IntegerField(read_only=True)
     # user_name = serializers.SerializerMethodField()
-    user = CustomUserSerializer()
+    user = CustomUserSerializer(read_only=True)
 
     # def get_user(self, obj):
     #     user_id = obj.id
