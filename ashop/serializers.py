@@ -28,12 +28,24 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ProductImageSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
-        product_id = self.context["product_id"]
-        return ProductImage.objects.create(product_id=product_id, **validated_data)
+        product = validated_data.pop("product")
+        product_id = product.id
+        return ProductImage.objects.create(product=product, **validated_data)
 
     class Meta:
         model = ProductImage
-        fields = ["id", "image"]
+        fields = ["id", "product", "image"]
+
+    # def create(self, validated_data):
+    #     product = validated_data.get("product")
+
+    #     images = validated_data.pop("image", [])
+
+    #     # product = Product.objects.get(pk=product_id)
+    #     # for image in images:
+    #     #     ProductImage.objects.create(product=product, image=image)
+
+    #     # return product
 
 
 # class RatingSerializer(serializers.ModelSerializer):
@@ -107,8 +119,15 @@ class ProductSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+        images_data = validated_data.pop("images", [])
+
         validated_data["seller_id"] = self.context["seller_id"]
-        return super().create(validated_data)
+        product = Product.objects.create(**validated_data)
+
+        for image_data in images_data:
+            ProductImage.objects.create(product=product, **image_data)
+
+        return product
 
 
 class SimpleProductSerializer(serializers.ModelSerializer):
