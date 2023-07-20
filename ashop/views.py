@@ -55,7 +55,7 @@ class ProductViewSet(ModelViewSet):
 
     def get_queryset(self):
         if self.request.method in SAFE_METHODS:
-            return Product.objects.prefetch_related("images").all()
+            return Product.objects.prefetch_related("images").filter(is_active=True)
         return Product.objects.filter(seller_id=self.request.user.id)
 
     def get_serializer_class(self):

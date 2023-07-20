@@ -170,6 +170,13 @@ class OrderItemSerializer(serializers.ModelSerializer):
                 buyer_id=buyer_id, product_id=product_id, **validated_data
             )
 
+    def update(self, instance, validated_data):
+        instance = super().update(instance, validated_data)
+        if instance.payment_status == OrderItem.PAYMENT_STATUS_COMPLETE:
+            instance.product.is_active = False
+            instance.product.save()
+        return instance
+
 
 class PaymentSerializer(serializers.ModelSerializer):
     order = OrderItemSerializer(read_only=True)

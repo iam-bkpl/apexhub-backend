@@ -69,8 +69,8 @@ class RatingSerializer(serializers.ModelSerializer):
         )
 
 
-class StudentSerializer(serializers.ModelSerializer):
-    rate = serializers.SerializerMethodField()
+# class StudentSerializer(serializers.ModelSerializer):
+#     rate = serializers.SerializerMethodField()
 
 
 class StudentSerializer(serializers.ModelSerializer):

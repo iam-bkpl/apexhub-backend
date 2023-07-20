@@ -53,9 +53,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         (USER_TYPE_EXTERNAL, "external"),
     )
 
-    MALE = "M"
-    FEMALE = "F"
-    OTHER = "O"
+    MALE = "Male"
+    FEMALE = "Female"
+    OTHER = "Others"
 
     GENDER_CHOICES = (
         (MALE, "Male"),
@@ -90,7 +90,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255, blank=True, null=True)
     last_name = models.CharField(max_length=255, blank=True, null=True)
     gender = models.CharField(
-        max_length=1, blank=True, null=True, choices=GENDER_CHOICES
+        max_length=255, blank=True, null=True, choices=GENDER_CHOICES
     )
     address = models.CharField(max_length=255, blank=True, null=True)
     program = models.CharField(
@@ -106,9 +106,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
-    website = models.URLField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     is_authorized_to_external = models.BooleanField(default=False)
+
+    # links
+
+    website = models.URLField(blank=True, null=True)
+    github = models.URLField(blank=True, null=True)
+    twitter = models.URLField(blank=True, null=True)
+    instagram = models.URLField(blank=True, null=True)
+    facebook = models.URLField(blank=True, null=True)
 
     objects = UserManager()
     USERNAME_FIELD = "email"
