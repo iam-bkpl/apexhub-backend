@@ -161,17 +161,14 @@ class OrderItemSerializer(serializers.ModelSerializer):
             #     product_id=product_id, buyer_id=buyer_id
             # )
             existing_order = OrderItem.objects.get(product_id=product_id)
-            return existing_order
+            # return existing_order
+            raise serializers.ValidationError(
+                {"detail": "Product is already in someon's order"}
+            )
         except ObjectDoesNotExist:
             return OrderItem.objects.create(
                 buyer_id=buyer_id, product_id=product_id, **validated_data
             )
-
-
-# class GetOrderSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = OrderItem
-#         fields = ['id','product_id',;]
 
 
 class PaymentSerializer(serializers.ModelSerializer):

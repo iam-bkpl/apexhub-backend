@@ -12,7 +12,8 @@ class UserCreateSerializer(BaseUserCreateSerializer):
     user_type = serializers.ChoiceField(choices=CustomUser.USER_TYPE_CHOICES)
 
     class Meta(BaseUserCreateSerializer.Meta):
-        fields = ["id", "email", "password", "user_type"]
+        # fields = ["id", "email", "password", "user_type"]
+        fields = "__all__"
 
 
 class UserSerializer(BaseUserSerializer):
