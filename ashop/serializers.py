@@ -155,6 +155,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         buyer_id = self.context.get("buyer_id")
         product_id = self.context.get("product_id")
+        # product_id = validated_data.get("product_id")
 
         try:
             # existing_order = OrderItem.objects.get(
@@ -163,7 +164,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
             existing_order = OrderItem.objects.get(product_id=product_id)
             # return existing_order
             raise serializers.ValidationError(
-                {"detail": "Product is already in someon's order"}
+                {"order_place_fail": "Product is already in someon's order"}
             )
         except ObjectDoesNotExist:
             return OrderItem.objects.create(
