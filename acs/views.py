@@ -17,6 +17,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 import rest_framework
+import requests
 
 
 class JobPostViewSet(ModelViewSet):
@@ -32,12 +33,13 @@ class JobPostViewSet(ModelViewSet):
         return super().get_serializer_class()
 
     def get_queryset(self):
-        user = self.request.user
-        if user.is_staff or user.is_acs or user.is_superuser or user.is_admin:
-            return JobPost.objects.all()
-        if user.is_external:
-            return JobPost.objects.filter(user=user)
-        return JobPost.objects.filter(is_active=True)
+        # user = self.request.user
+        # if user.is_staff or user.is_acs or user.is_superuser or user.is_admin:
+        #     return JobPost.objects.all()
+        # if user.is_external:
+        #     return JobPost.objects.filter(user=user)
+        # return JobPost.objects.filter(is_active=True)
+        return JobPost.objects.all()
 
     def get_serializer_context(self):
         user = self.request.user

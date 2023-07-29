@@ -93,14 +93,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         max_length=255, blank=True, null=True, choices=GENDER_CHOICES
     )
     address = models.CharField(max_length=255, blank=True, null=True)
-    program = models.CharField(
-        max_length=255, blank=True, null=True, choices=PROGRAM_CHOICES
-    )
-    enrollment_date = models.DateField(blank=True, null=True)
+    # program = models.CharField(
+    #     max_length=255, blank=True, null=True, choices=PROGRAM_CHOICES
+    # )
+    # enrollment_date = models.DateField(blank=True, null=True)
     is_seller = models.BooleanField(default=False)
 
     # Additional fields from the Acs model
-    website = models.URLField(blank=True)
 
     # Additional fields from the External model
     name = models.CharField(max_length=255, blank=True, null=True)
@@ -111,11 +110,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     # links
 
-    website = models.URLField(blank=True, null=True)
-    github = models.URLField(blank=True, null=True)
-    twitter = models.URLField(blank=True, null=True)
-    instagram = models.URLField(blank=True, null=True)
-    facebook = models.URLField(blank=True, null=True)
+    # github = models.URLField(blank=True, null=True)
+    # website = models.URLField(blank=True, null=True)
+    # twitter = models.URLField(blank=True, null=True)
+    # instagram = models.URLField(blank=True, null=True)
+    # facebook = models.URLField(blank=True, null=True)
+
+    github = models.CharField(max_length=255, blank=True, null=True)
+    website = models.CharField(max_length=255, blank=True, null=True)
+    twitter = models.CharField(max_length=255, blank=True, null=True)
+    instagram = models.CharField(max_length=255, blank=True, null=True)
+    linkedin = models.CharField(max_length=255, blank=True, null=True)
+    facebook = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserManager()
     USERNAME_FIELD = "email"

@@ -1,3 +1,4 @@
+import django.views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
@@ -26,12 +27,44 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from ashop.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .filter import CategoryFilter
 from rest_framework.permissions import SAFE_METHODS
+from django.views import View
+import requests
+from django.http import HttpResponse
+
+
+class verifyKhaltiPayment(View):
+    def get(self, request):
+        greeting = "Good Day"
+
+        return HttpResponse(greeting)
+
+    def post(self, request):
+        token = request.POST.get("token")
+        amount = request.POST.get("amount")
+
+        url = "https://khalti.com/api/v2/payment/verify/"
+
+        payload = {"token": token, "amount": amount}
+
+        headers = {"Authorization": "test_secret_key_63560762983542ef826ace19c1c5c23e"}
+
+        response = requests.request("POST", url, headers=headers, data=payload)
+
+        if response.status_code == 200:
+            # Payment verification was successful
+            result = response.json()
+            # Process the result as needed
+            return result
+        else:
+            # Payment verification failed
+            # Handle the error, maybe return an error response or raise an exception
+            return {"error": "Payment verification failed"}
 
 
 class CategoryViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["name"]
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     # filterset_class = CategoryFilter
     # search_fields = ['name','product_set__name']
 
@@ -54,9 +87,10 @@ class ProductViewSet(ModelViewSet):
         return {"request": self.request, "seller_id": self.request.user.id}
 
     def get_queryset(self):
-        if self.request.method in SAFE_METHODS:
-            return Product.objects.prefetch_related("images").filter(is_active=True)
-        return Product.objects.filter(seller_id=self.request.user.id)
+        # if self.request.method in SAFE_METHODS:
+        #     return Product.objects.prefetch_related("images").filter(is_active=True)
+        # return Product.objects.filter(seller_id=self.request.user.id)
+        return Product.objects.all()
 
     def get_serializer_class(self):
         return super().get_serializer_class()
@@ -124,7 +158,6 @@ class PaymentViewSet(ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-
         if user.is_admin:
             return Payment.objects.all()
 

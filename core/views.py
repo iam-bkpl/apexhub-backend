@@ -96,28 +96,35 @@ class CustomUserViewSet(ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-
-        if user.is_student:
-            return CustomUser.objects.filter(id=user.id)
-
-        if user.is_external:
-            return CustomUser.objects.filter(is_authorized_to_external=True)
-
-        return CustomUser.objects.all()
+        return CustomUser.objects.filter(id=user.id)
 
     def get_serializer_class(self):
-        user = self.request.user
+        return CustomUserSerializer
 
-        if user.is_student:
-            return StudentSerializer
+    # def get_queryset(self):
+    #     user = self.request.user
 
-        if user.is_acs:
-            return AcsSerializer
+    #     if user.is_student:
+    #         return CustomUser.objects.filter(id=user.id)
 
-        if user.is_external:
-            return ExternalSerializer
+    #     if user.is_external:
+    #         return CustomUser.objects.filter(is_authorized_to_external=True)
 
-        return Response("ok")
+    #     return CustomUser.objects.all()
+
+    # def get_serializer_class(self):
+    #     user = self.request.user
+
+    #     if user.is_student:
+    #         return StudentSerializer
+
+    #     if user.is_acs:
+    #         return AcsSerializer
+
+    #     if user.is_external:
+    #         return ExternalSerializer
+
+    #     return Response("ok")
 
     def get_serializer_context(self):
         user = self.request.user
@@ -131,22 +138,25 @@ class CustomUserViewSet(ModelViewSet):
         user = self.request.user
 
         if request.method == "GET":
-            if user.is_student:
-                serializer = StudentSerializer(user)
+            serializer = CustomUserSerializer(user)
 
-            elif user.is_external:
-                serializer = ExternalSerializer(user)
+            # if user.is_student:
+            #     serializer = StudentSerializer(user)
 
-            elif user.is_acs:
-                serializer = AcsSerializer(user)
+            # elif user.is_external:
+            #     serializer = ExternalSerializer(user)
 
-            else:
-                serializer = CustomUserSerializer(user)
+            # elif user.is_acs:
+            #     serializer = AcsSerializer(user)
+
+            # else:
+            #     serializer = CustomUserSerializer(user)
 
             return Response(serializer.data)
 
         elif request.method == "PUT":
-            serializer = StudentSerializer(user, data=request.data)
+            # serializer = StudentSerializer(user, data=request.data)
+            serializer = CustomUserSerializer(user, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data)

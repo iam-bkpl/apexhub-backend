@@ -11,6 +11,7 @@ router.register("students", views.StudentViewSet, basename="students")
 router.register("externals", views.ExternalViewSet, basename="externals")
 router.register("acs", views.AcsViewSet, basename="acs")
 router.register("contacts", views.ContactViewSet, basename="contacts")
+router.register("users", views.CustomUserViewSet, basename="users")
 
 student_router = routers.NestedSimpleRouter(router, "students", lookup="student")
 

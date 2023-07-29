@@ -22,4 +22,9 @@ urlpatterns = [
     path("", include(router.urls)),
     path("", include(products_router.urls)),
     path("", include(order_router.urls)),
+    path(
+        "verify-payment/",
+        views.verifyKhaltiPayment.as_view(),
+        name="verify-khalti-payment",
+    ),
 ]
