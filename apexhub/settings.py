@@ -253,20 +253,6 @@ SWAGGER_SETTINGS = {
     "VALIDATOR_URL": "http://localhost:8189",
 }
 
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "localhost"
-# EMAIL_HOST_USER = "i.am.bhandari.kapil@gmail.com"
-# EMAIL_HOST_PASSWORD = "cnjckcwblkehckzy"
-# EMAIL_PORT = 25
-# DEFAULT_FROM_EMAIL = "i.am.bhandari.kapil@gmail.com"
-# ADMINS = "admin@admin.com"
-
-EMAIL_HOST = "sandbox.smtp.mailtrap.io"
-EMAIL_HOST_USER = "1022081c335d16"
-EMAIL_HOST_PASSWORD = "c9c30ce4b483e0"
-EMAIL_PORT = "2525"
-
-
 CELERY_BROKER_URL = "redis://localhost:6379/1"
 CELERY_BEAT_SCHEDULE = {
     "notify_students": {
