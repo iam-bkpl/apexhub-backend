@@ -106,15 +106,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "apexhub",
-#         "USER": "root",
-#         "PASSWORD": "lipak@123",
-#         "HOST": "localhost",
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
